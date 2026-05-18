@@ -521,21 +521,34 @@
 }
 .deal__lede ul li::before { content: '✦'; color: var(--gold); }
 
+/* Dark-theme deal form (client preference). Navy panel, gold top accent,
+   inputs styled via the form--dark treatment in components.css. */
 .deal__card {
-  background: var(--white);
-  color: var(--text);
+  background: var(--navy);
+  color: var(--white);
+  border: 1px solid rgba(212, 175, 55, 0.22);
   border-radius: var(--r-3);
   padding: clamp(2rem, 3.5vw, 2.75rem);
-  box-shadow: 0 30px 60px -30px rgba(8, 28, 51, 0.55);
+  box-shadow: 0 30px 60px -30px rgba(8, 28, 51, 0.7);
   position: relative;
+  overflow: hidden;
 }
-.deal__card h3 { font-size: 1.5rem; }
+.deal__card::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+}
+.deal__card h3 { font-size: 1.5rem; color: var(--white); }
+.deal__card > p { color: rgba(255, 255, 255, 0.7); }
 .deal__card .form-grid { margin-top: var(--s-5); }
 .deal__card .btn { margin-top: var(--s-5); }
 .deal__card-note {
   margin-top: var(--s-3);
   font-size: var(--fs-xs);
-  color: var(--text-mute);
+  color: rgba(255, 255, 255, 0.55);
   text-align: center;
 }
 

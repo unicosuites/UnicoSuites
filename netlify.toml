@@ -1,0 +1,14 @@
+# Netlify deploy config for Unico Suites.
+#
+# The deployable static site lives in the `site/` subfolder of this repo
+# (the repo root also holds build scripts, source images and the brief).
+# Without this file Netlify publishes the repo ROOT — which has no index.html —
+# so every URL returns "Page not found". `publish = "site"` is the fix.
+#
+# No build step: the site is pre-built static files committed to the repo.
+# site/_headers and site/_redirects are picked up automatically because they
+# sit in the publish directory.
+
+[build]
+  publish = "site"
+  command = ""

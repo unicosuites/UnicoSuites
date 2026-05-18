@@ -427,10 +427,8 @@ body.nav-open { overflow: hidden; }
   color: var(--navy);
 }
 .form--dark .field__label { color: var(--gold-light); }
-/* Labels inside an embedded white card on a dark section stay navy.
-   The selector beats `.is-dark .field__label` because it has equal specificity
-   and comes later. */
-.deal__card .field__label,
+/* The contact form is a white card on a dark section, so its labels stay navy.
+   The deal form is now dark-themed (form--dark) so its labels use gold-light. */
 .contact__form .field__label { color: var(--navy); }
 
 .input, .select, .textarea {
