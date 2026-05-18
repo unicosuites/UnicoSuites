@@ -1,0 +1,21 @@
+# Python virtualenv (machine-specific — recreate with python@3.12; see CLAUDE.md / memory)
+.venv/
+
+# Python caches
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Node (puppeteer test helper is run from /tmp, never committed)
+node_modules/
+
+# Local build scratch
+*.log

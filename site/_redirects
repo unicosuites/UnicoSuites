@@ -1,0 +1,19 @@
+# Netlify redirects
+
+# Strip trailing slashes on clean URLs without an extension (Netlify handles HTML
+# extension fallback automatically; this is a belt-and-braces clean-URL aid)
+/about         /about.html         200
+/how-it-works  /how-it-works.html  200
+/deal-analyser /deal-analyser.html 200
+/faq           /faq.html           200
+/contact       /contact.html       200
+/privacy       /privacy.html       200
+/cookies       /cookies.html       200
+
+# Old / co.uk redirects (configure unicosuites.co.uk → unicosuites.com via Netlify
+# domain settings; the rule below is the in-app fallback in case anyone visits with
+# a www. prefix that the apex domain hasn't already handled)
+https://www.unicosuites.com/*  https://unicosuites.com/:splat  301!
+
+# 404 fallback
+/*  /404.html  404

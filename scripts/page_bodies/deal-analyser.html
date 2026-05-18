@@ -1,0 +1,170 @@
+---
+title: Deal Analyser — Serviced Accommodation ROI Calculator | Unico Suites
+description: Free serviced accommodation ROI calculator. See your property's projected SA income vs. traditional letting — monthly and annual breakdown, no contact details required.
+slug: deal-analyser.html
+breadcrumb: Deal analyser
+extra_scripts: <script src="js/deal-analyser.js" defer></script>
+---
+
+<section class="hero hero--page is-dark">
+  <div class="hero__bg" data-parallax>
+    <picture><source type="image/webp" srcset="assets/brand/banner-hero.webp"><img src="assets/brand/banner-hero.jpg" alt="" fetchpriority="high"></picture>
+  </div>
+  <div class="hero__overlay"></div>
+  <div class="container hero__inner">
+    <div class="hero__content reveal--stagger">
+      <ol class="breadcrumbs" aria-label="Breadcrumb">
+        <li><a href="index.html">Home</a></li>
+        <li aria-current="page">Deal analyser</li>
+      </ol>
+      <span class="eyebrow">Run the numbers</span>
+      <h1 class="hero__title">Your property as a <em>serviced let</em>.</h1>
+      <p class="hero__subtitle">Instant, free, no contact details. See what your property could earn as a short-stay let versus a traditional AST — with a fully transparent breakdown of costs and management fee.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--navy-deep is-dark">
+  <div class="container">
+    <div class="deal">
+      <div class="deal__lede reveal--stagger">
+        <span class="eyebrow">Inputs</span>
+        <h2>Tell us about the <em>property</em>.</h2>
+        <hr class="gold-rule">
+        <p class="lead">Defaults are weighted to the Bedford area. The model uses occupancy of 70%, an 18% management fee (subject to confirmation) and average operational costs benchmarked against our current portfolio.</p>
+        <ul>
+          <li>Adjust any field — the result updates on submit</li>
+          <li>Compare your current rent against projected SA income</li>
+          <li>Bookmark or share the URL — your inputs are saved in it</li>
+          <li>Print-friendly results, ready for your accountant</li>
+        </ul>
+      </div>
+
+      <form class="deal__card reveal" data-deal-form="page" novalidate>
+        <h3>Deal parameters</h3>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field__label" for="bedrooms">Bedrooms</label>
+            <select class="select" id="bedrooms" name="bedrooms" required>
+              <option value="studio">Studio</option>
+              <option value="1">1 bed</option>
+              <option value="2" selected>2 beds</option>
+              <option value="3">3 beds</option>
+              <option value="4">4 beds</option>
+              <option value="5+">5+ beds</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field__label" for="bathrooms">Bathrooms</label>
+            <select class="select" id="bathrooms" name="bathrooms">
+              <option value="1">1</option>
+              <option value="2" selected>2</option>
+              <option value="3">3</option>
+              <option value="4+">4+</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field__label" for="type">Property type</label>
+            <select class="select" id="type" name="type" required>
+              <option value="flat" selected>Flat / apartment</option>
+              <option value="house">House</option>
+              <option value="hmo">HMO</option>
+              <option value="studio">Studio</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field__label" for="location">Location</label>
+            <select class="select" id="location" name="location" required>
+              <option value="bedford" selected>Bedford</option>
+              <option value="kempston">Kempston</option>
+              <option value="milton-keynes">Milton Keynes</option>
+              <option value="luton">Luton</option>
+              <option value="northampton">Northampton</option>
+              <option value="other">Other (estimate)</option>
+            </select>
+          </div>
+          <div class="field field--full">
+            <label class="field__label" for="currentRent">Current rent (£/month, optional)</label>
+            <input class="input" id="currentRent" name="currentRent" type="number" min="0" step="50" placeholder="e.g. 950">
+          </div>
+          <div class="field field--full">
+            <label class="field__label" for="furnished">Furnished?</label>
+            <select class="select" id="furnished" name="furnished">
+              <option value="yes" selected>Yes — fully furnished</option>
+              <option value="part">Part furnished</option>
+              <option value="no">Unfurnished</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn--lg btn--block">Recalculate<svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="section section--silver" id="deal-results">
+  <div class="container">
+    <div class="section-head section-head--center reveal">
+      <span class="eyebrow eyebrow--centered">Your results</span>
+      <h2 class="text-center">Projected <em>monthly</em> income.</h2>
+      <hr class="gold-rule gold-rule--center">
+    </div>
+
+    <div class="results">
+      <div class="results__summary reveal--stagger">
+        <div class="metric">
+          <span class="metric__label">Traditional letting</span>
+          <span class="metric__value" id="metric-traditional">£0</span>
+          <span class="metric__sub" id="metric-traditional-sub">per month</span>
+        </div>
+        <div class="metric metric--hero">
+          <span class="metric__label">With Unico Suites</span>
+          <span class="metric__value" id="metric-sa">£0</span>
+          <span class="metric__sub" id="metric-sa-sub">per month (net to you)</span>
+        </div>
+        <div class="metric metric--accent">
+          <span class="metric__label">Additional income</span>
+          <span class="metric__value" id="metric-additional">£0</span>
+          <span class="metric__sub" id="metric-additional-sub">per month</span>
+        </div>
+      </div>
+
+      <div class="results__chart reveal">
+        <h3 style="text-align:center;margin-bottom:1rem">Monthly net comparison</h3>
+        <div class="bars">
+          <div class="bar"><div class="bar__column bar__column--ast" id="bar-ast" style="height:0%"><span class="bar__amount" id="bar-ast-amount">£0</span></div><div class="bar__label">Traditional AST</div></div>
+          <div class="bar"><div class="bar__column bar__column--sa"  id="bar-sa"  style="height:0%"><span class="bar__amount" id="bar-sa-amount">£0</span></div><div class="bar__label">Unico Suites SA</div></div>
+        </div>
+      </div>
+
+      <div class="breakdown reveal">
+        <table>
+          <caption>Full monthly &amp; annual breakdown</caption>
+          <thead>
+            <tr>
+              <th scope="col">Line item</th>
+              <th scope="col">Monthly</th>
+              <th scope="col">Annual</th>
+            </tr>
+          </thead>
+          <tbody id="breakdown-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="reveal" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem">
+        <div class="uplift-badge">
+          <strong id="uplift-pct">+0%</strong>
+          <span style="font-weight:600;letter-spacing:0.08em;text-transform:uppercase;font-size:0.8125rem">vs traditional letting</span>
+        </div>
+        <p id="uplift-sub" class="disclaimer" style="margin:0;max-width:24rem;text-align:end"></p>
+      </div>
+
+      <div class="reveal" style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:1rem">
+        <a class="btn" href="contact.html">Discuss this property with us<svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <button type="button" class="btn btn--ghost" onclick="window.print()">Print results</button>
+      </div>
+
+      <p class="disclaimer reveal" style="text-align:center;margin-inline:auto;margin-top:2rem">These figures are estimates only and are not guaranteed. Actual income depends on the specific property, demand, seasonality, listing performance, and other operational variables. Calculations use a default occupancy of 70%, an indicative management fee of 18% (subject to client agreement), and benchmarked operational costs. For a property-specific projection, book a free review.</p>
+    </div>
+  </div>
+</section>
