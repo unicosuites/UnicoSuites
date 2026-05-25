@@ -69,7 +69,7 @@
 }
 .hero__title {
   color: var(--white);
-  font-size: clamp(2.75rem, 5vw, 4.75rem);
+  font-size: clamp(3rem, 5.4vw, 5.25rem);
   line-height: 1.05;
 }
 .hero__title em {
@@ -123,6 +123,18 @@
   background: var(--gold);
   margin-bottom: var(--s-3);
 }
+.hero__stats-note {
+  margin: var(--s-3) 0 0;
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
+}
+.stat__asterisk {
+  color: var(--gold);
+  font-size: 0.55em;
+  vertical-align: super;
+  margin-inline-start: 1px;
+}
 
 /* Floating gold particles */
 .hero__particles {
@@ -162,7 +174,7 @@
 /* Scroll indicator */
 .hero__scroll {
   position: absolute;
-  inset-block-end: var(--s-6);
+  inset-block-end: clamp(2rem, 7vh, 5rem);
   inset-inline-start: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -337,17 +349,6 @@
 }
 .step__body { color: rgba(255, 255, 255, 0.7); font-size: 0.95rem; line-height: 1.7; }
 
-@media (min-width: 880px) {
-  .steps::before {
-    content: '';
-    position: absolute;
-    inset-inline: 5%;
-    inset-block-start: 2rem;
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.4) 8%, rgba(212, 175, 55, 0.4) 92%, transparent 100%);
-    z-index: 0;
-  }
-}
 
 /* ============================================================
    COMPARISON (self-manage vs Unico)
@@ -387,14 +388,25 @@
               border-color var(--t-base) var(--ease-out),
               box-shadow var(--t-base) var(--ease-out);
 }
+/* From small-tablet up, sit the photo to the right of the name/bio.
+   Below this the card stacks (photo on top) so the bio keeps its width. */
+@media (min-width: 600px) {
+  .founder {
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+}
+.founder__text { flex: 1 1 auto; min-width: 0; }
 .founder:hover {
   transform: translateY(-4px);
   border-color: rgba(212, 175, 55, 0.45);
   box-shadow: var(--shadow-2);
 }
 .founder__avatar {
-  width: 10rem;
-  height: 10rem;
+  flex: 0 0 auto;
+  width: clamp(10rem, 18vw, 13rem);
+  height: clamp(10rem, 18vw, 13rem);
   border-radius: var(--r-pill);
   position: relative;
   isolation: isolate;
@@ -953,7 +965,7 @@
    PRINT STYLES (deal analyser results)
    ============================================================ */
 @media print {
-  .nav, .footer, .cookie-banner, .whatsapp-float, .hero__particles, .hero__scroll { display: none !important; }
+  .nav, .footer, .cookie-banner, .hero__particles, .hero__scroll { display: none !important; }
   body { background: white !important; color: black !important; }
   .section--navy, .section--navy-deep { background: white !important; color: black !important; }
   .deal__card, .breakdown, .metric, .results__chart { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }

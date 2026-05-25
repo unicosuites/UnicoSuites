@@ -204,10 +204,11 @@
           <div class="stat__label">Guest support, every day of the year</div>
         </div>
         <div class="stat">
-          <div class="stat__num"><span data-counter="98">0</span><em>%</em></div>
+          <div class="stat__num"><span data-counter="98">0</span><em>%</em><sup class="stat__asterisk">*</sup></div>
           <div class="stat__label">Average occupancy on prime listings</div>
         </div>
       </div>
+      <p class="hero__stats-note">*Average occupancy across prime managed listings; individual results vary.</p>
     </aside>
   </div>
 
@@ -252,6 +253,7 @@
           <li><strong>Higher income</strong> than a traditional AST tenancy in most areas we operate in.</li>
           <li><strong>Zero day-to-day</strong> — bookings, cleaning, linen, guests, maintenance — all handled in-house.</li>
           <li><strong>Transparent reporting</strong> with monthly statements and live occupancy dashboards.</li>
+          <li><strong>Insured &amp; screened guests</strong> to keep your property safe.</li>
           <li><strong>Local expertise</strong> in Bedford from a founding team that lives and lets in the market.</li>
         </ul>
         <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap">
@@ -281,7 +283,15 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
         </div>
         <h3 class="card__title">Guest communication</h3>
-        <p class="card__body">Vetted, vouched-for guests with full ID checks. We handle every message, request and review — 24/7, in your house style.</p>
+        <p class="card__body">We handle every message, request and review — 24/7, in your house style, before, during and after each stay.</p>
+      </article>
+
+      <article class="card">
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h3 class="card__title">Vetted guests</h3>
+        <p class="card__body">Every guest is ID-verified and screened before they book, with insurance cover in place — so your property stays protected.</p>
       </article>
 
       <article class="card">
@@ -298,6 +308,14 @@
         </div>
         <h3 class="card__title">Multi-platform listing</h3>
         <p class="card__body">Professionally listed and synced across Airbnb, Booking.com, Vrbo and direct — channel-managed to avoid double bookings.</p>
+      </article>
+
+      <article class="card">
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+        <h3 class="card__title">Photography &amp; staging</h3>
+        <p class="card__body">Styled, staged and professionally photographed so your listing stands out and commands the highest nightly rate.</p>
       </article>
 
       <article class="card">
@@ -352,12 +370,12 @@
       <li class="step">
         <div class="step__num">3</div>
         <h3 class="step__title">Listing &amp; setup</h3>
-        <p class="step__body">Professional photography, copywriting, channel listing, smart-lock fit-out, linen, consumables — done in under a week.</p>
+        <p class="step__body">Professional photography, copywriting, channel listing, staging, linen and consumables.</p>
       </li>
       <li class="step">
         <div class="step__num">4</div>
         <h3 class="step__title">We manage everything</h3>
-        <p class="step__body">Bookings, guests, cleaning, maintenance, reporting — handled. You receive a monthly statement and a deposit into your account.</p>
+        <p class="step__body">Bookings, guests, cleaning, maintenance, reporting — handled. You receive a monthly statement and a payout into your account.</p>
       </li>
     </ol>
 
@@ -388,7 +406,7 @@
           <li>Manually adjusting pricing across multiple platforms.</li>
           <li>Handling complaints, refund requests and tricky guests alone.</li>
           <li>One-star reviews from issues you never had time to spot.</li>
-          <li>No backup when you're on holiday — or the property is.</li>
+          <li>No backup when you're away, even with guests mid-stay.</li>
         </ul>
       </article>
 
@@ -400,7 +418,7 @@
           <li>24/7 guest support so you can switch your phone off.</li>
           <li>In-house cleaning and linen — same team, every stay.</li>
           <li>Dynamic pricing across every channel, every day.</li>
-          <li>Guests vetted with ID and damage deposits in place.</li>
+          <li>Guests vetted with ID and insurance policies in place.</li>
           <li>Consistent 5-star reviews — and the higher rates that follow.</li>
           <li>Backed by a 1,000+ property group — operationally proven.</li>
         </ul>
@@ -429,11 +447,13 @@
             <img src="assets/team/saad-aqeel-circle-light-480.png" alt="Saad Aqeel, Co-Founder of Unico Suites" width="240" height="240" loading="lazy">
           </picture>
         </div>
-        <div>
-          <p class="founder__role">Co-Founder</p>
-          <h3 class="founder__name">Saad Aqeel</h3>
+        <div class="founder__text">
+          <div>
+            <p class="founder__role">Co-Founder</p>
+            <h3 class="founder__name">Saad Aqeel</h3>
+          </div>
+          <p class="founder__bio">Saad brings hands-on operating experience in serviced accommodation, with a lettings background that means he understands both sides of the deal. He runs the day-to-day — from listings to guest experience — and is the founder you'll meet on a property visit.</p>
         </div>
-        <p class="founder__bio">Saad brings hands-on operating experience in serviced accommodation, with a lettings background that means he understands both sides of the deal. He runs the day-to-day — from listings to guest experience — and is the founder you'll meet on a property visit.</p>
       </article>
 
       <article class="founder">
@@ -443,11 +463,13 @@
             <img src="assets/team/naz-islam-circle-light-480.png" alt="Naz Islam, Co-Founder of Unico Suites" width="240" height="240" loading="lazy">
           </picture>
         </div>
-        <div>
-          <p class="founder__role">Co-Founder</p>
-          <h3 class="founder__name">Naz Islam</h3>
+        <div class="founder__text">
+          <div>
+            <p class="founder__role">Co-Founder</p>
+            <h3 class="founder__name">Naz Islam</h3>
+          </div>
+          <p class="founder__bio">Naz brings decades of experience in estate agency, commercial finance and property investment. He sits across the strategy, partnerships and group operations — and the data behind every yield projection we put on the table.</p>
         </div>
-        <p class="founder__bio">Naz brings decades of experience in estate agency, commercial finance and property investment. He sits across the strategy, partnerships and group operations — and the data behind every yield projection we put on the table.</p>
       </article>
     </div>
   </div>
@@ -700,11 +722,6 @@
     </div>
   </div>
 </footer>
-
-<!-- WhatsApp float -->
-<a href="https://wa.me/447784656416" class="whatsapp-float" aria-label="Message us on WhatsApp" target="_blank" rel="noopener">
-  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1s-.5-.2-.7.2-.8.9-1 1.1-.4.1-.7 0c-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1s0-.5.1-.6c.1-.1.3-.4.4-.5.1-.2.2-.3.3-.5s0-.4 0-.5-.7-1.7-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3z"/><path d="M20.5 3.5C18.3 1.3 15.3 0 12 0 5.4 0 0 5.4 0 12c0 2.1.5 4.1 1.6 5.9L0 24l6.3-1.6c1.7.9 3.6 1.4 5.7 1.4 6.6 0 12-5.4 12-12 0-3.3-1.3-6.3-3.5-8.3zM12 21.9c-1.8 0-3.6-.5-5.1-1.4l-.4-.2-3.7 1 .9-3.6-.2-.4c-1-1.6-1.6-3.5-1.6-5.4 0-5.5 4.5-10 10-10 2.7 0 5.2 1 7.1 2.9 1.9 1.9 2.9 4.4 2.9 7.1 0 5.6-4.5 10-10 10z"/></svg>
-</a>
 
 <!-- Cookie banner -->
 <div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Cookie consent" aria-live="polite">

@@ -21,9 +21,9 @@
   --line-dark:      rgba(255, 255, 255, 0.12);
 
   /* — Type scale (fluid) — */
-  --fs-h1:    clamp(2.625rem, 1.45rem + 4.2vw, 4.5rem);   /* 42 → 72 */
-  --fs-h2:    clamp(2rem,    1.55rem + 2.2vw, 3rem);      /* 32 → 48 */
-  --fs-h3:    clamp(1.25rem, 1.05rem + 0.7vw, 1.5rem);    /* 20 → 24 */
+  --fs-h1:    clamp(3rem,    1.7rem + 4.6vw, 5.25rem);    /* 48 → 84 */
+  --fs-h2:    clamp(2.25rem, 1.7rem + 2.6vw, 3.5rem);     /* 36 → 56 */
+  --fs-h3:    clamp(1.4rem,  1.15rem + 0.9vw, 1.75rem);   /* 22 → 28 */
   --fs-h4:    clamp(1.0625rem, 0.95rem + 0.4vw, 1.25rem); /* 17 → 20 */
   --fs-lead:  clamp(1.0625rem, 0.95rem + 0.4vw, 1.25rem); /* 17 → 20 */
   --fs-body:  1rem;                                       /* 16 */
@@ -78,7 +78,7 @@
   --z-modal:     100;
 
   /* — Layout — */
-  --nav-h:       4.5rem;          /* 72 */
+  --nav-h:       5.25rem;         /* 84 */
   --section-py:  clamp(4rem, 8vw, 7.5rem);
 
   color-scheme: light;

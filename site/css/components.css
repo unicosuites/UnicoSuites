@@ -14,12 +14,15 @@
   height: var(--nav-h);
   display: flex;
   align-items: center;
-  background: transparent;
+  /* Solid frosted navy at all times — the bar (and logo) stay fully visible
+     from the very top; .is-scrolled only adds the drop shadow once scrolled. */
+  background: rgba(13, 42, 72, 0.92);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
   transition: background var(--t-base) var(--ease-out),
-              backdrop-filter var(--t-base) var(--ease-out),
               border-color var(--t-base) var(--ease-out),
               box-shadow var(--t-base) var(--ease-out);
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.18);
 }
 
 .nav__inner {
@@ -40,12 +43,12 @@
   font-family: 'Playfair Display', serif;
   font-weight: 500;
   color: var(--white);
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   letter-spacing: 0.05em;
 }
 .nav__brand-mark {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
   border-radius: var(--r-2);
   background: var(--navy);
   display: grid;
@@ -53,13 +56,13 @@
   box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.4) inset;
   transition: box-shadow var(--t-base) var(--ease-out), transform var(--t-base) var(--ease-out);
 }
-.nav__brand-mark img { width: 70%; height: auto; }
+.nav__brand-mark img { width: 78%; height: auto; }
 .nav__brand:hover .nav__brand-mark {
   box-shadow: 0 0 0 1px var(--gold) inset, 0 6px 18px -8px rgba(212, 175, 55, 0.5);
   transform: translateY(-1px);
 }
 .nav__brand-text { display: flex; flex-direction: column; line-height: 1; gap: 2px; }
-.nav__brand-name { font-size: 1.05rem; letter-spacing: 0.04em; }
+.nav__brand-name { font-size: 1.2rem; letter-spacing: 0.04em; }
 .nav__brand-sub  { font-family: 'DM Sans', sans-serif; font-size: 0.625rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--gold-light); font-weight: 600; }
 
 .nav__links {
@@ -97,31 +100,11 @@
 .nav__link:hover::after,
 .nav__link[aria-current="page"]::after { transform: scaleX(1); }
 
-/* Wrapper that carries the scroll-converge transform/opacity, so the button
-   inside keeps its own .btn:hover lift untouched. JS drives this (main.js). */
+/* Spacing wrapper around the CTA. */
 .nav__cta-shift {
   display: inline-flex;
   align-items: center;
   margin-inline-start: var(--s-4);
-  will-change: transform, opacity;
-}
-.nav__brand { will-change: transform, opacity; }
-.nav__links { will-change: opacity; }
-
-/* Zero-flash start state: before the deferred JS runs, paint the pushed-out /
-   faded state directly so there's no jump. Motion users only — reduced-motion
-   users keep the resting layout at every moment. */
-@media (prefers-reduced-motion: no-preference) {
-  .js-ready .nav__brand     { transform: translateX(-40px); opacity: .7; }
-  .js-ready .nav__cta-shift { transform: translateX(40px);  opacity: .7; }
-  .js-ready .nav__links     { opacity: 0; }
-}
-@media (prefers-reduced-motion: no-preference) and (max-width: 600px) {
-  .js-ready .nav__brand     { transform: translateX(-22px); }
-  .js-ready .nav__cta-shift { transform: translateX(22px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .nav__brand, .nav__cta-shift, .nav__links { will-change: auto; }
 }
 
 /* Scrolled state */
@@ -858,40 +841,3 @@ body.nav-open { overflow: hidden; }
 .breadcrumbs a { color: rgba(255, 255, 255, 0.65); }
 .breadcrumbs a:hover { color: var(--gold-light); }
 .breadcrumbs li[aria-current="page"] { color: var(--gold-light); }
-
-/* ============================================================
-   WHATSAPP FLOAT BUTTON
-   ============================================================ */
-.whatsapp-float {
-  position: fixed;
-  inset-block-end: 1.25rem;
-  inset-inline-end: 1.25rem;
-  z-index: var(--z-banner);
-  width: 3.25rem;
-  height: 3.25rem;
-  border-radius: var(--r-pill);
-  background: #25D366;
-  color: white;
-  display: grid;
-  place-items: center;
-  box-shadow: 0 8px 28px -8px rgba(37, 211, 102, 0.5);
-  transition: transform var(--t-base) var(--ease-out), box-shadow var(--t-base) var(--ease-out);
-}
-.whatsapp-float::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  border: 2px solid #25D366;
-  animation: pulse 2.5s ease-out infinite;
-}
-.whatsapp-float:hover {
-  transform: scale(1.05);
-  box-shadow: 0 12px 32px -8px rgba(37, 211, 102, 0.6);
-}
-.whatsapp-float svg { width: 1.625rem; height: 1.625rem; }
-
-@keyframes pulse {
-  0%   { transform: scale(1);   opacity: 0.8; }
-  100% { transform: scale(1.6); opacity: 0;   }
-}
