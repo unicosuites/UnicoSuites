@@ -185,35 +185,6 @@
   100% { transform: translateY(-10vh) translateX(-15px) scale(0.6); opacity: 0; }
 }
 
-/* Scroll indicator */
-.hero__scroll {
-  position: absolute;
-  inset-block-end: clamp(2rem, 7vh, 5rem);
-  inset-inline-start: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.6875rem;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
-}
-.hero__scroll::after {
-  content: '';
-  width: 1px;
-  height: 2.5rem;
-  background: linear-gradient(180deg, var(--gold), transparent);
-  animation: scrollHint 2s var(--ease-out) infinite;
-  transform-origin: top;
-}
-@keyframes scrollHint {
-  0%   { transform: scaleY(0); opacity: 1; }
-  60%  { transform: scaleY(1); opacity: 1; }
-  100% { transform: scaleY(1); opacity: 0; }
-}
-
 /* Inner-page hero — shorter */
 .hero--page {
   min-height: 60vh;
@@ -437,48 +408,41 @@
 .founder {
   display: grid;
   grid-template-areas:
-    "name"
-    "avatar"
-    "bio";
-  grid-template-columns: 1fr;
-  column-gap: clamp(1rem, 3vw, 2rem);
-  row-gap: var(--s-5);
-  align-items: start;
+    "name avatar"
+    "bio  bio";
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: clamp(0.75rem, 2.5vw, 2rem);
+  row-gap: clamp(1rem, 3vw, 1.5rem);
+  align-items: center;
   background: var(--white);
   border: 1px solid var(--line);
   border-radius: var(--r-3);
-  padding: clamp(2rem, 4vw, 3rem);
+  padding: clamp(1.5rem, 3.5vw, 3rem);
   transition: transform var(--t-base) var(--ease-out),
               border-color var(--t-base) var(--ease-out),
               box-shadow var(--t-base) var(--ease-out);
 }
-/* Above ~480 px: name top-left, photo top-right, bio across the full bottom. */
-@media (min-width: 480px) {
-  .founder {
-    grid-template-areas:
-      "name avatar"
-      "bio  bio";
-    grid-template-columns: 1fr auto;
-  }
-}
-.founder__head   { grid-area: name; display: flex; flex-direction: column; gap: var(--s-2); }
+.founder__head   { grid-area: name; display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; }
 .founder__avatar { grid-area: avatar; }
 .founder__bio    { grid-area: bio; }
-.founder:hover {
-  transform: translateY(-4px);
-  border-color: rgba(212, 175, 55, 0.45);
-  box-shadow: var(--shadow-2);
+/* Hover lift on pointer devices only — avoids the gold border lingering after a tap on mobile. */
+@media (hover: hover) {
+  .founder:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212, 175, 55, 0.45);
+    box-shadow: var(--shadow-2);
+  }
 }
 .founder__avatar {
   flex: 0 0 auto;
-  width: clamp(10rem, 18vw, 13rem);
-  height: clamp(10rem, 18vw, 13rem);
+  width: clamp(5.5rem, 22vw, 13rem);
+  height: clamp(5.5rem, 22vw, 13rem);
   border-radius: var(--r-pill);
   position: relative;
   isolation: isolate;
   overflow: hidden;
   background: var(--off-white);
-  box-shadow: 0 0 0 2px var(--gold), 0 0 0 8px var(--off-white), 0 16px 40px -16px rgba(13, 42, 72, 0.3);
+  box-shadow: 0 0 0 2px var(--gold), 0 0 0 6px var(--off-white), 0 12px 30px -14px rgba(13, 42, 72, 0.3);
 }
 .founder__avatar img {
   width: 100%;
@@ -638,7 +602,12 @@
 .results__summary {
   display: grid;
   gap: var(--s-4);
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: 1fr;
+}
+@media (min-width: 720px) {
+  .results__summary {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
 }
 .metric {
   background: var(--white);
@@ -745,13 +714,15 @@
 }
 
 /* Line chart (replaces bar chart on the deal-analyser results) */
-.line-chart-wrap { width: 100%; overflow-x: auto; margin-block: var(--s-5); }
+.line-chart-wrap { width: 100%; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-block: var(--s-5); }
 .line-chart {
   width: 100%;
   height: auto;
   max-width: 100%;
   display: block;
-  min-width: 560px;
+}
+@media (min-width: 560px) {
+  .line-chart { min-width: 0; }
 }
 .line-chart__gridline { stroke: rgba(13, 42, 72, 0.08); stroke-width: 1; }
 .line-chart__label    { font-family: 'DM Sans', sans-serif; font-size: 11px; fill: var(--text-light); }
@@ -801,7 +772,10 @@
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
-.breakdown table { width: 100%; border-collapse: collapse; min-width: 480px; }
+.breakdown table { width: 100%; border-collapse: collapse; }
+@media (min-width: 520px) {
+  .breakdown table { min-width: 480px; }
+}
 .breakdown caption {
   text-align: start;
   padding: var(--s-5);
@@ -812,10 +786,15 @@
   border-bottom: 1px solid var(--line);
 }
 .breakdown th, .breakdown td {
-  padding: var(--s-4) var(--s-5);
+  padding: var(--s-3) var(--s-4);
   text-align: start;
   font-size: var(--fs-sm);
   border-bottom: 1px solid var(--line);
+}
+@media (min-width: 520px) {
+  .breakdown th, .breakdown td {
+    padding: var(--s-4) var(--s-5);
+  }
 }
 .breakdown th {
   background: var(--off-white);
@@ -893,9 +872,17 @@
 .contact {
   display: grid;
   gap: clamp(2.5rem, 6vw, 4.5rem);
+  align-items: start;
 }
 @media (min-width: 880px) {
   .contact { grid-template-columns: 1fr 1.1fr; }
+  /* Sticky form: while the left column (steps + contacts + address + map) scrolls past,
+     the form stays in view so the visual void on the right disappears. */
+  .contact__form {
+    position: sticky;
+    top: calc(var(--nav-h) + var(--s-5));
+    align-self: start;
+  }
 }
 
 .contact__steps {

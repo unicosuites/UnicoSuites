@@ -53,6 +53,8 @@
       toggle.setAttribute('aria-expanded', 'true');
       drawer.setAttribute('aria-hidden', 'false');
       document.body.classList.add('nav-open');
+      // Reset drawer scroll so the first link (About) is always visible on open.
+      drawer.scrollTop = 0;
     };
     toggle.addEventListener('click', () => {
       const isOpen = toggle.getAttribute('aria-expanded') === 'true';

@@ -97,6 +97,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
   scroll-padding-top: var(--nav-h);
+  overflow-x: hidden;
 }
 
 body {
@@ -108,8 +109,15 @@ body {
   color: var(--text);
   background: var(--white);
   text-rendering: optimizeLegibility;
-  overflow-x: clip;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
+
+/* Universal guard against runaway widths on mobile. Any single element wider
+   than the viewport drags the whole page sideways and reveals the body's
+   white background underneath dark sections. */
+img, svg, video, picture, iframe { max-width: 100%; }
+table { max-width: 100%; }
 
 img, picture, svg, video { display: block; max-width: 100%; }
 img { height: auto; }

@@ -127,6 +127,12 @@ PROPERTY_MAP = {
     "22_52653": ("hallway-monochrome", "Monochrome hallway with crittall doors and tiled floor"),
     "25_52653": ("kitchen-island", "Open-plan kitchen with marble flooring, navy island and skylight"),
     "30_52653": ("garden-pergola", "Garden patio with glass pergola, rattan seating and dining set"),
+    # New batch (Jun 2026): client-supplied property photography
+    "f2_bed_1_bright_sharp":      ("bedroom-bright",       "Bright bedroom with crisp white linen and natural light"),
+    "f4_kitchen_lounge_bright_sharp": ("kitchen-lounge-bright", "Open-plan kitchen and lounge with bright natural light"),
+    "Image (11)":  ("interior-feature-1", "Premium interior feature"),
+    "Image (19)":  ("interior-feature-2", "Premium interior feature"),
+    "7_82692":     ("interior-statement", "Statement interior space"),
 }
 
 

@@ -86,9 +86,9 @@ HEAD_TMPL = """<!doctype html>
         "email": "hello@unicosuites.com",
         "address": {{
           "@type": "PostalAddress",
-          "streetAddress": "60 Bromham Road",
-          "addressLocality": "Bedford",
-          "postalCode": "MK40 2QG",
+          "streetAddress": "6 Bridge Street",
+          "addressLocality": "Northampton",
+          "postalCode": "NN1 1NW",
           "addressCountry": "GB"
         }},
         "sameAs": [

@@ -152,10 +152,10 @@
   position: fixed;
   inset: 0;
   background: var(--navy-deep);
-  padding: calc(var(--nav-h) + var(--s-6)) var(--gutter) var(--s-8);
+  padding: calc(var(--nav-h) + var(--s-3)) var(--gutter) var(--s-6);
   display: flex;
   flex-direction: column;
-  gap: var(--s-5);
+  gap: var(--s-3);
   transform: translateX(100%);
   transition: transform var(--t-base) var(--ease-out);
   z-index: calc(var(--z-nav) - 1);
@@ -163,7 +163,7 @@
 }
 .nav__drawer[aria-hidden="false"] { transform: translateX(0); }
 .nav__drawer .nav__link {
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   font-family: 'Playfair Display', serif;
   font-weight: 500;
   padding: var(--s-3) 0;
