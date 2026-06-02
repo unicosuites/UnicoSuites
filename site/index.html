@@ -12,7 +12,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://unicosuites.com/">
   <meta property="og:title" content="Unico Suites — Serviced Accommodation Management in Bedford">
-  <meta property="og:description" content="Hands-off property management with higher returns than AST letting. Bedford, Kempston, Milton Keynes & beyond.">
+  <meta property="og:description" content="Hands-off property management with higher returns than AST letting. Bedford, Kempston, Milton Keynes, Cambridge & beyond.">
   <meta property="og:image" content="https://unicosuites.com/assets/brand/og-image.jpg">
   <meta property="og:locale" content="en_GB">
   <meta property="og:site_name" content="Unico Suites">
@@ -85,7 +85,7 @@
           "addressCountry": "GB"
         },
         "geo": { "@type": "GeoCoordinates", "latitude": "52.1396", "longitude": "-0.4737" },
-        "areaServed": ["Bedford", "Kempston", "Milton Keynes", "Luton", "Northampton", "Bedfordshire", "Hertfordshire"],
+        "areaServed": ["Bedford", "Kempston", "Milton Keynes", "Luton", "Northampton", "Cambridge", "Bedfordshire", "Hertfordshire", "Cambridgeshire"],
         "openingHoursSpecification": [{
           "@type": "OpeningHoursSpecification",
           "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
@@ -248,7 +248,7 @@
         <span class="eyebrow">Who we are</span>
         <h2>Expert property management, <em>simplified</em>.</h2>
         <hr class="gold-rule">
-        <p class="lead">Unico Suites is the serviced accommodation arm of an established group managing over 1,000 properties across Bedfordshire, Northamptonshire and Hertfordshire. We turn long-let homes into premium short-stay assets — fully hands-off, fully accountable.</p>
+        <p class="lead">Unico Suites is the serviced accommodation arm of an established group managing over 1,000 properties across Bedfordshire, Northamptonshire, Hertfordshire and Cambridgeshire. We turn long-let homes into premium short-stay assets — fully hands-off, fully accountable.</p>
         <ul class="benefits">
           <li><strong>Higher income</strong> than a traditional AST tenancy in most areas we operate in.</li>
           <li><strong>Zero day-to-day</strong> — bookings, cleaning, linen, guests, maintenance — all handled in-house.</li>
@@ -353,7 +353,6 @@
     <div class="section-head section-head--center reveal">
       <span class="eyebrow eyebrow--centered">The process</span>
       <h2 class="text-center">From key handover to first booking in <em>days</em>.</h2>
-      <hr class="gold-rule gold-rule--center">
     </div>
 
     <ol class="steps reveal--stagger" style="list-style:none;margin:0;padding:0">
@@ -441,35 +440,31 @@
 
     <div class="founders reveal--stagger">
       <article class="founder">
+        <div class="founder__head">
+          <p class="founder__role">Co-Founder</p>
+          <h3 class="founder__name">Saad Aqeel</h3>
+        </div>
         <div class="founder__avatar">
           <picture>
             <source type="image/webp" srcset="assets/team/saad-aqeel-circle-light-240.webp 240w, assets/team/saad-aqeel-circle-light-480.webp 480w" sizes="160px">
             <img src="assets/team/saad-aqeel-circle-light-480.png" alt="Saad Aqeel, Co-Founder of Unico Suites" width="240" height="240" loading="lazy">
           </picture>
         </div>
-        <div class="founder__text">
-          <div>
-            <p class="founder__role">Co-Founder</p>
-            <h3 class="founder__name">Saad Aqeel</h3>
-          </div>
-          <p class="founder__bio">Saad brings hands-on operating experience in serviced accommodation, with a lettings background that means he understands both sides of the deal. He runs the day-to-day — from listings to guest experience — and is the founder you'll meet on a property visit.</p>
-        </div>
+        <p class="founder__bio">Saad brings hands-on operating experience in serviced accommodation, with a lettings background that means he understands both sides of the deal. He runs the day-to-day — from listings to guest experience — and is the founder you'll meet on a property visit.</p>
       </article>
 
       <article class="founder">
+        <div class="founder__head">
+          <p class="founder__role">Co-Founder</p>
+          <h3 class="founder__name">Naz Islam</h3>
+        </div>
         <div class="founder__avatar">
           <picture>
             <source type="image/webp" srcset="assets/team/naz-islam-circle-light-240.webp 240w, assets/team/naz-islam-circle-light-480.webp 480w" sizes="160px">
             <img src="assets/team/naz-islam-circle-light-480.png" alt="Naz Islam, Co-Founder of Unico Suites" width="240" height="240" loading="lazy">
           </picture>
         </div>
-        <div class="founder__text">
-          <div>
-            <p class="founder__role">Co-Founder</p>
-            <h3 class="founder__name">Naz Islam</h3>
-          </div>
-          <p class="founder__bio">Naz brings decades of experience in estate agency, commercial finance and property investment. He sits across the strategy, partnerships and group operations — and the data behind every yield projection we put on the table.</p>
-        </div>
+        <p class="founder__bio">Naz brings decades of experience in estate agency, commercial finance and property investment. He sits across the strategy, partnerships and group operations — and the data behind every yield projection we put on the table.</p>
       </article>
     </div>
   </div>
@@ -526,35 +521,16 @@
             <select class="select" id="type" name="type" required>
               <option value="flat" selected>Flat / apartment</option>
               <option value="house">House</option>
-              <option value="hmo">HMO</option>
               <option value="studio">Studio</option>
             </select>
           </div>
 
-          <div class="field">
-            <label class="field__label" for="location">Location</label>
-            <select class="select" id="location" name="location" required>
-              <option value="bedford" selected>Bedford</option>
-              <option value="kempston">Kempston</option>
-              <option value="milton-keynes">Milton Keynes</option>
-              <option value="luton">Luton</option>
-              <option value="northampton">Northampton</option>
-              <option value="other">Other (estimate)</option>
-            </select>
-          </div>
+          <input type="hidden" id="location" name="location" value="bedford">
 
           <div class="field field--full">
-            <label class="field__label" for="currentRent">Current rent (£/month, optional)</label>
-            <input class="input" id="currentRent" name="currentRent" type="number" min="0" step="50" placeholder="e.g. 950">
-          </div>
-
-          <div class="field field--full">
-            <label class="field__label" for="furnished">Furnished?</label>
-            <select class="select" id="furnished" name="furnished">
-              <option value="yes" selected>Yes — fully furnished</option>
-              <option value="part">Part furnished</option>
-              <option value="no">Unfurnished</option>
-            </select>
+            <label class="field__label" for="currentRent">Bedford reference rent (£/month)</label>
+            <input class="input" id="currentRent" name="currentRent" type="number" value="950" readonly aria-readonly="true">
+            <p class="field__hint">Average Bedford long-let rent. Used as the comparison baseline.</p>
           </div>
         </div>
 
@@ -702,7 +678,6 @@
           60 Bromham Road<br>
           Bedford, MK40 2QG<br>
           <a href="tel:+441234237990">01234 237990</a><br>
-          <a href="https://wa.me/447784656416">WhatsApp · 07784 656416</a><br>
           <a href="mailto:hello@unicosuites.com">hello@unicosuites.com</a>
         </address>
       </div>

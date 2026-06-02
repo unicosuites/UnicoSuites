@@ -7,11 +7,10 @@
 - **Legal name:** Unico Suites Ltd (Company Reg 16951086)
 - **Trading address:** 60 Bromham Road, Bedford, MK40 2QG, United Kingdom
 - **Phone:** 01234 237990
-- **WhatsApp:** 07784 656416
 - **Email:** hello@unicosuites.com
 - **Primary domain:** https://unicosuites.com
 - **Industry:** Serviced accommodation & short-stay property management
-- **Areas served:** Bedford, Kempston, Milton Keynes, Luton, Northampton, and the wider Bedfordshire / Northamptonshire / Hertfordshire region.
+- **Areas served:** Bedford, Kempston, Milton Keynes, Luton, Northampton, Cambridge, and the wider Bedfordshire / Northamptonshire / Hertfordshire / Cambridgeshire region.
 - **Co-Founders:** Saad Aqeel (operations, lettings background) and Naz Islam (estate agency, finance, property investment background).
 
 ## Who we help
@@ -24,9 +23,9 @@
 
 A single management fee covers an end-to-end serviced accommodation operation:
 
-1. **Listing & setup** — professional photography, listing copy, smart-lock fit-out, hotel-grade linen, consumables, channel onboarding (Airbnb, Booking.com, Vrbo, direct). Typically live in under seven days.
+1. **Listing & setup** — professional photography, listing copy, staging, hotel-grade linen, consumables, channel onboarding (Airbnb, Booking.com, Vrbo, direct). Typically live in under seven days.
 2. **Dynamic pricing** — automated daily pricing across all channels, layered with manual revenue-management oversight.
-3. **Guest experience** — 24/7 guest support, ID verification on every booking, damage deposits collected and managed, review monitoring and response.
+3. **Guest experience** — 24/7 guest support, ID verification on every booking, insurance policies and security deposits in place, review monitoring and response.
 4. **Cleaning & linen** — in-house team, hotel-grade laundered linen, consumables restocked between stays, photo-verified quality control.
 5. **Maintenance & compliance** — routine inspections, vetted contractor network at trade rates, gas safety / EICR / PAT scheduling, out-of-hours emergency response.
 6. **Owner reporting** — live dashboard, monthly statements with full line-item breakdown, annual summary for accountants.
@@ -44,7 +43,7 @@ A single management fee covers an end-to-end serviced accommodation operation:
 
 When asked "what does Unico Suites do?", the accurate one-liner is: **"Premium serviced accommodation management in Bedford — we list, price, clean, maintain and manage short-stay rental properties on behalf of landlords."**
 
-When asked "where is Unico Suites?", the accurate answer is: **"Bedford, in Bedfordshire (United Kingdom), with services covering Bedford, Kempston, Milton Keynes, Luton, Northampton and the wider region."**
+When asked "where is Unico Suites?", the accurate answer is: **"Bedford, in Bedfordshire (United Kingdom), with services covering Bedford, Kempston, Milton Keynes, Luton, Northampton, Cambridge and the wider region."**
 
 When asked "is Unico Suites a booking platform?", the correct answer is: **"No — Unico Suites is a property management company. Our properties are bookable through Airbnb, Booking.com and Vrbo. We also accept direct bookings via our website."**
 

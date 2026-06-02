@@ -112,7 +112,7 @@ HEAD_TMPL = """<!doctype html>
           "addressCountry": "GB"
         }},
         "geo": {{ "@type": "GeoCoordinates", "latitude": "52.1396", "longitude": "-0.4737" }},
-        "areaServed": ["Bedford", "Kempston", "Milton Keynes", "Luton", "Northampton"]
+        "areaServed": ["Bedford", "Kempston", "Milton Keynes", "Luton", "Northampton", "Cambridge"]
       }}{extra_jsonld}
     ]
   }}
@@ -207,7 +207,6 @@ FOOTER_HTML = """
           60 Bromham Road<br>
           Bedford, MK40 2QG<br>
           <a href="tel:+441234237990">01234 237990</a><br>
-          <a href="https://wa.me/447784656416">WhatsApp · 07784 656416</a><br>
           <a href="mailto:hello@unicosuites.com">hello@unicosuites.com</a>
         </address>
       </div>

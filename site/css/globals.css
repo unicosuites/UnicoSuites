@@ -11,6 +11,7 @@
   --gold:           #D4AF37;
   --gold-light:     #E8CC6E;
   --gold-pale:      #F5EDD4;
+  --gold-text:      #9C7E1F;  /* darker gold for AA contrast on light surfaces */
   --white:          #FFFFFF;
   --silver:         #F1F2F4;
   --off-white:      #F8F6F2;
@@ -21,15 +22,15 @@
   --line-dark:      rgba(255, 255, 255, 0.12);
 
   /* — Type scale (fluid) — */
-  --fs-h1:    clamp(3rem,    1.7rem + 4.6vw, 5.25rem);    /* 48 → 84 */
-  --fs-h2:    clamp(2.25rem, 1.7rem + 2.6vw, 3.5rem);     /* 36 → 56 */
-  --fs-h3:    clamp(1.4rem,  1.15rem + 0.9vw, 1.75rem);   /* 22 → 28 */
+  --fs-h1:    clamp(3.25rem, 1.8rem + 5.4vw, 6rem);       /* 52 → 96 */
+  --fs-h2:    clamp(2.75rem, 1.9rem + 3.8vw, 4.5rem);     /* 44 → 72 */
+  --fs-h3:    clamp(1.625rem, 1.25rem + 1.3vw, 2.25rem);  /* 26 → 36 */
   --fs-h4:    clamp(1.0625rem, 0.95rem + 0.4vw, 1.25rem); /* 17 → 20 */
   --fs-lead:  clamp(1.0625rem, 0.95rem + 0.4vw, 1.25rem); /* 17 → 20 */
   --fs-body:  1rem;                                       /* 16 */
   --fs-sm:    0.875rem;                                   /* 14 */
   --fs-xs:    0.8125rem;                                  /* 13 */
-  --fs-eyebrow: 0.6875rem;                                /* 11 */
+  --fs-eyebrow: 0.875rem;                                 /* 14 */
 
   /* — Spacing scale — */
   --s-1:  0.25rem;   /*  4 */
@@ -78,7 +79,7 @@
   --z-modal:     100;
 
   /* — Layout — */
-  --nav-h:       5.25rem;         /* 84 */
+  --nav-h:       6.75rem;         /* 108 — taller bar so the logo mark reads big */
   --section-py:  clamp(4rem, 8vw, 7.5rem);
 
   color-scheme: light;
@@ -153,10 +154,10 @@ h1, h2, h3, h4, h5 {
   margin: 0;
 }
 
-h1 { font-size: var(--fs-h1); line-height: 1.08; letter-spacing: -0.02em; }
-h2 { font-size: var(--fs-h2); line-height: 1.16; letter-spacing: -0.015em; }
-h3 { font-size: var(--fs-h3); line-height: 1.3; }
-h4 { font-size: var(--fs-h4); line-height: 1.35; }
+h1 { font-size: var(--fs-h1); line-height: 1.02; letter-spacing: -0.03em;  font-weight: 600; }
+h2 { font-size: var(--fs-h2); line-height: 1.05; letter-spacing: -0.025em; font-weight: 600; }
+h3 { font-size: var(--fs-h3); line-height: 1.18; letter-spacing: -0.02em;  font-weight: 600; }
+h4 { font-size: var(--fs-h4); line-height: 1.3;  letter-spacing: -0.01em;  font-weight: 600; }
 
 /* Italic emphasis in headings — uses the AA-passing darker gold on light surfaces.
    Override on dark sections via `.is-dark em` further down. */
@@ -169,6 +170,14 @@ p {
   color: var(--text-light);
 }
 
+/* Whenever a list follows a paragraph, leave clear breathing space between them. */
+p + ul,
+p + ol,
+.lead + ul,
+.lead + ol {
+  margin-block-start: var(--s-5);
+}
+
 .lead {
   font-size: var(--fs-lead);
   line-height: 1.7;
@@ -179,25 +188,25 @@ p {
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: 0.75rem;
   font-size: var(--fs-eyebrow);
   font-weight: 700;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--gold-text);
 }
 .eyebrow::before {
   content: '';
-  width: 1.875rem;
-  height: 1px;
+  width: 2.25rem;
+  height: 2px;
   background: var(--gold);
   display: inline-block;
 }
 .eyebrow--centered { justify-content: center; }
 .eyebrow--centered::after {
   content: '';
-  width: 1.875rem;
-  height: 1px;
+  width: 2.25rem;
+  height: 2px;
   background: var(--gold);
 }
 
@@ -241,13 +250,18 @@ p {
   display: flex;
   flex-direction: column;
   gap: var(--s-4);
-  max-width: 44rem;
+  max-width: 56rem;
   margin-bottom: clamp(2rem, 5vw, 4.5rem);
 }
 .section-head--center {
   text-align: center;
   margin-inline: auto;
   align-items: center;
+}
+.section-head h2 {
+  font-size: clamp(2.5rem, 1.9rem + 3.8vw, 4.5rem);
+  line-height: 1.05;
+  font-weight: 600;
 }
 
 /* Reveal-on-scroll base state — animated by main.js.

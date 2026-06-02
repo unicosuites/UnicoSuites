@@ -42,7 +42,7 @@ extra_scripts: <script src="js/deal-analyser.js" defer></script>
 
       <form class="deal__card form--dark reveal" data-deal-form="page" novalidate>
         <h3>Your Property Details</h3>
-        <p style="margin-bottom:1rem">Enter your details and we'll calculate your estimated earning potential.</p>
+        <p style="margin-bottom:1rem">Enter your details and we'll calculate your estimated earning potential in Bedford.</p>
         <div class="form-grid">
           <div class="field">
             <label class="field__label" for="bedrooms">Bedrooms</label>
@@ -69,32 +69,18 @@ extra_scripts: <script src="js/deal-analyser.js" defer></script>
             <select class="select" id="type" name="type" required>
               <option value="flat" selected>Flat / apartment</option>
               <option value="house">House</option>
-              <option value="hmo">HMO</option>
               <option value="studio">Studio</option>
             </select>
           </div>
           <div class="field">
-            <label class="field__label" for="location">Location</label>
-            <select class="select" id="location" name="location" required>
-              <option value="bedford" selected>Bedford</option>
-              <option value="kempston">Kempston</option>
-              <option value="milton-keynes">Milton Keynes</option>
-              <option value="luton">Luton</option>
-              <option value="northampton">Northampton</option>
-              <option value="other">Other (estimate)</option>
-            </select>
+            <label class="field__label" for="location-display">Location</label>
+            <input class="input" id="location-display" type="text" value="Bedford" readonly aria-readonly="true">
+            <input type="hidden" id="location" name="location" value="bedford">
           </div>
           <div class="field field--full">
-            <label class="field__label" for="currentRent">Current rent (£/month, optional)</label>
-            <input class="input" id="currentRent" name="currentRent" type="number" min="0" step="50" placeholder="e.g. 950">
-          </div>
-          <div class="field field--full">
-            <label class="field__label" for="furnished">Furnished?</label>
-            <select class="select" id="furnished" name="furnished">
-              <option value="yes" selected>Yes — fully furnished</option>
-              <option value="part">Part furnished</option>
-              <option value="no">Unfurnished</option>
-            </select>
+            <label class="field__label" for="currentRent">Bedford reference rent (£/month)</label>
+            <input class="input" id="currentRent" name="currentRent" type="number" value="950" readonly aria-readonly="true">
+            <p class="field__hint">Average Bedford long-let rent. The comparison uses this as the baseline.</p>
           </div>
         </div>
         <button type="submit" class="btn btn--lg btn--block">Recalculate<svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
@@ -107,8 +93,13 @@ extra_scripts: <script src="js/deal-analyser.js" defer></script>
   <div class="container">
     <div class="section-head section-head--center reveal">
       <span class="eyebrow eyebrow--centered">Your results</span>
-      <h2 class="text-center">Projected <em>monthly</em> income.</h2>
+      <h2 class="text-center">Projected <em>annual</em> income.</h2>
       <hr class="gold-rule gold-rule--center">
+    </div>
+
+    <div class="print-header" aria-hidden="true">
+      <strong>Unico Suites · Deal Analysis</strong>
+      <span class="print-header__sub">Bedford reference rent baseline · figures are estimates only</span>
     </div>
 
     <div class="results">
@@ -116,26 +107,37 @@ extra_scripts: <script src="js/deal-analyser.js" defer></script>
         <div class="metric">
           <span class="metric__label">Traditional letting</span>
           <span class="metric__value" id="metric-traditional">£0</span>
-          <span class="metric__sub" id="metric-traditional-sub">per month</span>
+          <span class="metric__sub" id="metric-traditional-sub">/ monthly</span>
         </div>
         <div class="metric metric--hero">
-          <span class="metric__label">With Unico Suites</span>
+          <span class="metric__label">With Unico Suites (net to you)</span>
           <span class="metric__value" id="metric-sa">£0</span>
-          <span class="metric__sub" id="metric-sa-sub">per month (net to you)</span>
+          <span class="metric__sub" id="metric-sa-sub">/ monthly</span>
         </div>
         <div class="metric metric--accent">
           <span class="metric__label">Additional income</span>
           <span class="metric__value" id="metric-additional">£0</span>
-          <span class="metric__sub" id="metric-additional-sub">per month</span>
+          <span class="metric__sub" id="metric-additional-sub">/ monthly</span>
         </div>
       </div>
 
       <div class="results__chart reveal">
-        <h3 style="text-align:center;margin-bottom:1rem">Monthly net comparison</h3>
-        <div class="bars">
-          <div class="bar"><div class="bar__column bar__column--ast" id="bar-ast" style="height:0%"><span class="bar__amount" id="bar-ast-amount">£0</span></div><div class="bar__label">Traditional AST</div></div>
-          <div class="bar"><div class="bar__column bar__column--sa"  id="bar-sa"  style="height:0%"><span class="bar__amount" id="bar-sa-amount">£0</span></div><div class="bar__label">Unico Suites SA</div></div>
+        <h3 style="text-align:center;margin-bottom:0.5rem">Monthly net — 12-month view</h3>
+        <p style="text-align:center;font-size:var(--fs-sm);color:var(--text-light);margin-bottom:1.5rem">Traditional AST stays flat. Serviced accommodation tracks seasonal demand — peaks summer, dips winter.</p>
+        <div class="line-chart-wrap">
+          <svg class="line-chart" viewBox="0 0 720 320" role="img" aria-label="12-month net income comparison: traditional letting vs Unico Suites serviced accommodation">
+            <g class="line-chart__grid"></g>
+            <g class="line-chart__y-axis"></g>
+            <g class="line-chart__x-axis"></g>
+            <path class="line-chart__path line-chart__path--ast" d="" fill="none"></path>
+            <path class="line-chart__path line-chart__path--sa"  d="" fill="none"></path>
+            <g class="line-chart__points"></g>
+          </svg>
         </div>
+        <ul class="line-chart__legend">
+          <li><span class="legend-swatch legend-swatch--ast"></span>Traditional AST</li>
+          <li><span class="legend-swatch legend-swatch--sa"></span>Unico Suites SA</li>
+        </ul>
       </div>
 
       <div class="breakdown reveal">
@@ -162,10 +164,10 @@ extra_scripts: <script src="js/deal-analyser.js" defer></script>
 
       <div class="reveal" style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:1rem">
         <a class="btn" href="contact.html">Discuss this property with us<svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        <button type="button" class="btn btn--ghost" onclick="window.print()">Print results</button>
+        <button type="button" class="btn btn--ghost" data-print-results>Print this analysis<svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
       </div>
 
-      <p class="disclaimer reveal" style="text-align:center;margin-inline:auto;margin-top:2rem">These figures are estimates only and are not guaranteed. Actual income depends on the specific property, demand, seasonality, listing performance, and other operational variables. Calculations use a default occupancy of 70%, an indicative management fee of 18% (subject to client agreement), and benchmarked operational costs. For a property-specific projection, book a free review.</p>
+      <p class="disclaimer reveal" style="text-align:center;margin-inline:auto;margin-top:2rem">These figures are estimates only and are not guaranteed. Actual income depends on the specific property, demand, seasonality, listing performance, and other operational variables. Calculations use a default occupancy of 70%, an 18% management fee, and benchmarked operational costs for the Bedford market. For a property-specific projection, book a free review.</p>
     </div>
   </div>
 </section>

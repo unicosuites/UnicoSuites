@@ -65,7 +65,7 @@
       if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') close();
     });
     // Close drawer if viewport widens to desktop
-    window.matchMedia('(min-width: 960px)').addEventListener('change', e => {
+    window.matchMedia('(min-width: 840px)').addEventListener('change', e => {
       if (e.matches) close();
     });
   }
