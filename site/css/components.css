@@ -147,19 +147,23 @@
 .nav__toggle[aria-expanded="true"] .icon-open  { display: none; }
 .nav__toggle[aria-expanded="true"] .icon-close { display: block; }
 
-/* Mobile drawer */
+/* Mobile drawer — sits BELOW the nav (so we never have to clear the nav with
+   top padding). The nav with its hamburger/close button stays visible above. */
 .nav__drawer {
   position: fixed;
-  inset: 0;
+  inset-block-start: var(--nav-h);
+  inset-inline: 0;
+  inset-block-end: 0;
   background: var(--navy-deep);
-  padding: calc(var(--nav-h) + var(--s-3)) var(--gutter) var(--s-6);
+  padding: var(--s-5) clamp(1.25rem, 5vw, 2rem) var(--s-6);
   display: flex;
   flex-direction: column;
-  gap: var(--s-3);
+  gap: var(--s-2);
   transform: translateX(100%);
   transition: transform var(--t-base) var(--ease-out);
   z-index: calc(var(--z-nav) - 1);
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .nav__drawer[aria-hidden="false"] { transform: translateX(0); }
 .nav__drawer .nav__link {
@@ -168,6 +172,7 @@
   font-weight: 500;
   padding: var(--s-3) 0;
   border-bottom: 1px solid var(--line-dark);
+  color: var(--white);
 }
 .nav__drawer .nav__link::after { bottom: -1px; background: var(--gold); }
 .nav__drawer-cta { margin-top: var(--s-5); }
