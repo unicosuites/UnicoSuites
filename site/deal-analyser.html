@@ -161,10 +161,10 @@
         <span class="eyebrow">Inputs</span>
         <h2>Tell us about the <em>property</em>.</h2>
         <hr class="gold-rule">
-        <p class="lead">Defaults are weighted to the Bedford area. The model uses occupancy of 70%, an 18% management fee (subject to confirmation) and average operational costs benchmarked against our current portfolio.</p>
+        <p class="lead">A Bedford-specific calculator. Pick the bedrooms, bathrooms, property type, parking and area — we compare the typical long-let rent for that profile against the serviced-accommodation income we'd target in the same Bedford market.</p>
         <ul>
           <li>Adjust any field — the result updates on submit</li>
-          <li>Compare your current rent against projected SA income</li>
+          <li>Compare your typical Bedford rent against projected SA income</li>
           <li>Bookmark or share the URL — your inputs are saved in it</li>
           <li>Print-friendly results, ready for your accountant</li>
         </ul>
@@ -177,21 +177,20 @@
           <div class="field">
             <label class="field__label" for="bedrooms">Bedrooms</label>
             <select class="select" id="bedrooms" name="bedrooms" required>
-              <option value="studio">Studio</option>
               <option value="1">1 bed</option>
               <option value="2" selected>2 beds</option>
               <option value="3">3 beds</option>
               <option value="4">4 beds</option>
-              <option value="5+">5+ beds</option>
+              <option value="5">5 beds</option>
             </select>
           </div>
           <div class="field">
             <label class="field__label" for="bathrooms">Bathrooms</label>
-            <select class="select" id="bathrooms" name="bathrooms">
+            <select class="select" id="bathrooms" name="bathrooms" required>
               <option value="1">1</option>
               <option value="2" selected>2</option>
               <option value="3">3</option>
-              <option value="4+">4+</option>
+              <option value="4">4</option>
             </select>
           </div>
           <div class="field">
@@ -199,18 +198,24 @@
             <select class="select" id="type" name="type" required>
               <option value="flat" selected>Flat / apartment</option>
               <option value="house">House</option>
-              <option value="studio">Studio</option>
             </select>
           </div>
           <div class="field">
-            <label class="field__label" for="location-display">Location</label>
-            <input class="input" id="location-display" type="text" value="Bedford" readonly aria-readonly="true">
-            <input type="hidden" id="location" name="location" value="bedford">
+            <label class="field__label" for="parking">Parking</label>
+            <select class="select" id="parking" name="parking" required>
+              <option value="0" selected>No parking</option>
+              <option value="1">1 space</option>
+              <option value="2">2+ spaces</option>
+            </select>
           </div>
           <div class="field field--full">
-            <label class="field__label" for="currentRent">Bedford reference rent (£/month)</label>
-            <input class="input" id="currentRent" name="currentRent" type="number" value="950" readonly aria-readonly="true">
-            <p class="field__hint">Average Bedford long-let rent. The comparison uses this as the baseline.</p>
+            <label class="field__label" for="location">Location in Bedford</label>
+            <select class="select" id="location" name="location" required>
+              <option value="town-centre">Bedford Town Centre</option>
+              <option value="station">Bedford Station Area</option>
+              <option value="other" selected>Other Bedford Areas</option>
+            </select>
+            <p class="field__hint">Adjusts the projection for area-level demand. Currently Bedford only.</p>
           </div>
         </div>
         <button type="submit" class="btn btn--lg btn--block">Recalculate<svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
@@ -235,12 +240,12 @@
     <div class="results">
       <div class="results__summary reveal--stagger">
         <div class="metric">
-          <span class="metric__label">Traditional letting</span>
+          <span class="metric__label">Current rent</span>
           <span class="metric__value" id="metric-traditional">£0</span>
           <span class="metric__sub" id="metric-traditional-sub">/ monthly</span>
         </div>
         <div class="metric metric--hero">
-          <span class="metric__label">With Unico Suites (net to you)</span>
+          <span class="metric__label">Estimated income</span>
           <span class="metric__value" id="metric-sa">£0</span>
           <span class="metric__sub" id="metric-sa-sub">/ monthly</span>
         </div>
@@ -251,33 +256,13 @@
         </div>
       </div>
 
-      <div class="results__chart reveal">
-        <h3 style="text-align:center;margin-bottom:0.5rem">Monthly net — 12-month view</h3>
-        <p style="text-align:center;font-size:var(--fs-sm);color:var(--text-light);margin-bottom:1.5rem">Traditional AST stays flat. Serviced accommodation tracks seasonal demand — peaks summer, dips winter.</p>
-        <div class="line-chart-wrap">
-          <svg class="line-chart" viewBox="0 0 720 320" role="img" aria-label="12-month net income comparison: traditional letting vs Unico Suites serviced accommodation">
-            <g class="line-chart__grid"></g>
-            <g class="line-chart__y-axis"></g>
-            <g class="line-chart__x-axis"></g>
-            <path class="line-chart__path line-chart__path--ast" d="" fill="none"></path>
-            <path class="line-chart__path line-chart__path--sa"  d="" fill="none"></path>
-            <g class="line-chart__points"></g>
-          </svg>
-        </div>
-        <ul class="line-chart__legend">
-          <li><span class="legend-swatch legend-swatch--ast"></span>Traditional AST</li>
-          <li><span class="legend-swatch legend-swatch--sa"></span>Unico Suites SA</li>
-        </ul>
-      </div>
-
       <div class="breakdown reveal">
         <table>
-          <caption>Full monthly &amp; annual breakdown</caption>
+          <caption>How the estimated monthly income is calculated</caption>
           <thead>
             <tr>
               <th scope="col">Line item</th>
-              <th scope="col">Monthly</th>
-              <th scope="col">Annual</th>
+              <th scope="col">Adjustment</th>
             </tr>
           </thead>
           <tbody id="breakdown-tbody"></tbody>
@@ -287,7 +272,7 @@
       <div class="reveal" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem">
         <div class="uplift-badge">
           <strong id="uplift-pct">+0%</strong>
-          <span style="font-weight:600;letter-spacing:0.08em;text-transform:uppercase;font-size:0.8125rem">vs traditional letting</span>
+          <span style="font-weight:600;letter-spacing:0.08em;text-transform:uppercase;font-size:0.8125rem">vs typical Bedford rent</span>
         </div>
         <p id="uplift-sub" class="disclaimer" style="margin:0;max-width:24rem;text-align:end"></p>
       </div>
@@ -297,7 +282,7 @@
         <button type="button" class="btn btn--ghost" data-print-results>Print this analysis<svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
       </div>
 
-      <p class="disclaimer reveal" style="text-align:center;margin-inline:auto;margin-top:2rem">These figures are estimates only and are not guaranteed. Actual income depends on the specific property, demand, seasonality, listing performance, and other operational variables. Calculations use a default occupancy of 70%, an 18% management fee, and benchmarked operational costs for the Bedford market. For a property-specific projection, book a free review.</p>
+      <p class="disclaimer reveal" style="text-align:center;margin-inline:auto;margin-top:2rem">These figures are estimates only and are not guaranteed. Actual income depends on the specific property, condition, presentation, marketing performance, and other operational variables. Baselines reflect typical Bedford-area performance. The 18% management fee is charged on gross booking revenue and is not deducted here. For a property-specific projection, book a free review.</p>
     </div>
   </div>
 </section>

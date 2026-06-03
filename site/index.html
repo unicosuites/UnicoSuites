@@ -494,22 +494,21 @@
           <div class="field">
             <label class="field__label" for="bedrooms">Bedrooms</label>
             <select class="select" id="bedrooms" name="bedrooms" required>
-              <option value="studio">Studio</option>
               <option value="1">1 bed</option>
               <option value="2" selected>2 beds</option>
               <option value="3">3 beds</option>
               <option value="4">4 beds</option>
-              <option value="5+">5+ beds</option>
+              <option value="5">5 beds</option>
             </select>
           </div>
 
           <div class="field">
             <label class="field__label" for="bathrooms">Bathrooms</label>
-            <select class="select" id="bathrooms" name="bathrooms">
+            <select class="select" id="bathrooms" name="bathrooms" required>
               <option value="1">1</option>
               <option value="2" selected>2</option>
               <option value="3">3</option>
-              <option value="4+">4+</option>
+              <option value="4">4</option>
             </select>
           </div>
 
@@ -518,16 +517,26 @@
             <select class="select" id="type" name="type" required>
               <option value="flat" selected>Flat / apartment</option>
               <option value="house">House</option>
-              <option value="studio">Studio</option>
             </select>
           </div>
 
-          <input type="hidden" id="location" name="location" value="bedford">
+          <div class="field">
+            <label class="field__label" for="parking">Parking</label>
+            <select class="select" id="parking" name="parking" required>
+              <option value="0" selected>No parking</option>
+              <option value="1">1 space</option>
+              <option value="2">2+ spaces</option>
+            </select>
+          </div>
 
           <div class="field field--full">
-            <label class="field__label" for="currentRent">Bedford reference rent (£/month)</label>
-            <input class="input" id="currentRent" name="currentRent" type="number" value="950" readonly aria-readonly="true">
-            <p class="field__hint">Average Bedford long-let rent. Used as the comparison baseline.</p>
+            <label class="field__label" for="location">Location in Bedford</label>
+            <select class="select" id="location" name="location" required>
+              <option value="town-centre">Bedford Town Centre</option>
+              <option value="station">Bedford Station Area</option>
+              <option value="other" selected>Other Bedford Areas</option>
+            </select>
+            <p class="field__hint">Adjusts the projection for area-level demand. Currently Bedford only.</p>
           </div>
         </div>
 

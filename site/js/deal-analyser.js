@@ -1,52 +1,71 @@
 /* ============================================================
    Unico Suites — Deal Analyser
-   ROI calculator. Reads URL params, runs model, animates results.
-   Defaults below are PLACEHOLDERS pending client confirmation.
+   Bedford-area uplift calculator. Reads URL params, runs model,
+   animates results. Model is a deterministic adjustment formula
+   over Bedford-area baselines — see lookup tables below.
    ============================================================ */
 
 (() => {
   'use strict';
 
-  // ----- Calculation defaults (adjust once client confirms) -----
-  const RATES = {            // base nightly rate (£) by bedroom count
-    'studio': 65,
-    '1':      80,
-    '2':     100,
-    '3':     130,
-    '4':     160,
-    '5+':    190,
+  // ----- Bedford baseline tables (client-confirmed) -----
+  const BASE_RENT = {           // typical Bedford long-let rent (£ / month)
+    '1': 900,
+    '2': 1100,
+    '3': 1300,
+    '4': 1500,
+    '5': 1600,
   };
-  const LOCATION_MULTIPLIERS = {
-    'bedford':       1.00,
-    'kempston':      0.90,
-    'milton-keynes': 1.15,
-    'luton':         0.95,
-    'northampton':   1.00,
-    'other':         0.95,
+  const BASE_SA_INCOME = {      // typical SA gross monthly income (£ / month)
+    '1': 1350,
+    '2': 1750,
+    '3': 2150,
+    '4': 2550,
+    '5': 2850,
   };
-  const TYPE_MULTIPLIERS = {
-    'house':  1.10,
-    'flat':   1.00,
-    'hmo':    0.85,
-    'studio': 0.90,
+  const TYPE_ADJ = {
+    'flat':  0,
+    'house': 150,
   };
-  const OCCUPANCY      = 0.70;                          // 70 % avg
-  const NIGHTS_PER_MONTH = 30.4;
-  const AVG_STAY        = 4.5;                          // nights per booking
-  const PLATFORM_FEE_PCT = 0.03;                        // Airbnb/Booking cut
-  const MGMT_FEE_PCT     = 0.18;                        // TBC
-  const MAINTENANCE_PM   = 50;                          // £/month maintenance allowance
-  const CLEAN_BASE       = 45;                          // per turnover
-  const CLEAN_PER_BED    = 15;
-  const CONSUM_BASE      = 40;                          // per month consumables
-  const CONSUM_PER_BED   = 10;
+  const PARKING_ADJ = {
+    '0': 0,
+    '1': 75,
+    '2': 150,
+  };
+  const LOCATION_ADJ = {
+    'town-centre': 150,
+    'station':     100,
+    'other':         0,
+  };
+  const LOCATION_LABELS = {
+    'town-centre': 'Bedford Town Centre',
+    'station':     'Bedford Station Area',
+    'other':       'Other Bedford Areas',
+  };
+  const TYPE_LABELS = { flat: 'Flat / Apartment', house: 'House' };
+  const PARKING_LABELS = {
+    '0': 'No parking',
+    '1': '1 parking space',
+    '2': '2+ parking spaces',
+  };
 
   // ----- Helpers -----
   const gbp = (n, decimals = 0) =>
     new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: decimals }).format(n);
 
+  const signed = (n) => (n >= 0 ? `+${gbp(n)}` : `−${gbp(Math.abs(n))}`);
+
   const $ = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+  const clampBeds = (v) => (['1','2','3','4','5'].includes(String(v)) ? String(v) : '2');
+  const clampBaths = (v) => {
+    const n = parseInt(v, 10);
+    if (!Number.isFinite(n)) return 2;
+    return Math.max(1, Math.min(4, n));
+  };
+  const clampType = (v) => (['flat','house'].includes(v) ? v : 'flat');
+  const clampParking = (v) => (['0','1','2'].includes(String(v)) ? String(v) : '0');
+  const clampLocation = (v) => (['town-centre','station','other'].includes(v) ? v : 'other');
 
   // Animate a numeric element to a target value
   const animateValue = (el, target, formatter = gbp, duration = 1400) => {
@@ -63,73 +82,54 @@
   };
 
   // ----- Calculation model -----
-  function calculateDeal({ bedrooms, type, location, currentRent }) {
-    const bedroomKey = bedrooms === 'studio' ? 'studio' : (bedrooms in RATES ? bedrooms : '1');
-    const nightly = (RATES[bedroomKey] || 80) *
-                    (LOCATION_MULTIPLIERS[location] || 1) *
-                    (TYPE_MULTIPLIERS[type] || 1);
+  function calculateDeal(raw) {
+    const bedrooms = clampBeds(raw.bedrooms);
+    const bathrooms = clampBaths(raw.bathrooms);
+    const type = clampType(raw.type);
+    const parking = clampParking(raw.parking);
+    const location = clampLocation(raw.location);
 
-    const occupiedNights = NIGHTS_PER_MONTH * OCCUPANCY;
-    const grossMonthly   = nightly * occupiedNights;
+    const currentRent = BASE_RENT[bedrooms];
+    const baseIncome  = BASE_SA_INCOME[bedrooms];
+    const bathAdj     = (bathrooms - 1) * 100;
+    const typeAdj     = TYPE_ADJ[type];
+    const parkingAdj  = PARKING_ADJ[parking];
+    const locationAdj = LOCATION_ADJ[location];
 
-    const turnoversPerMonth = occupiedNights / AVG_STAY;
-    const bedCount = bedroomKey === 'studio' ? 0 : (bedroomKey === '5+' ? 5 : parseInt(bedroomKey, 10) || 1);
-    const cleaningPerTurn = CLEAN_BASE + bedCount * CLEAN_PER_BED;
-    const cleaningMonthly = cleaningPerTurn * turnoversPerMonth;
+    const estimatedMonthly  = baseIncome + bathAdj + typeAdj + parkingAdj + locationAdj;
+    const additionalMonthly = estimatedMonthly - currentRent;
 
-    const consumablesMonthly = CONSUM_BASE + bedCount * CONSUM_PER_BED;
-    const platformFees       = grossMonthly * PLATFORM_FEE_PCT;
-    const utilitiesMonthly   = 180 + bedCount * 35; // rough — bills included in SA
-    const opex = cleaningMonthly + consumablesMonthly + platformFees + utilitiesMonthly + MAINTENANCE_PM;
-    const grossAfterOpex = grossMonthly - opex;
-    const mgmtFee        = Math.max(0, grossAfterOpex) * MGMT_FEE_PCT;
-    const netToOwner     = grossAfterOpex - mgmtFee;
+    const currentAnnual    = currentRent * 12;
+    const estimatedAnnual  = estimatedMonthly * 12;
+    const additionalAnnual = additionalMonthly * 12;
 
-    const traditionalMonthly = parseFloat(currentRent) || estimateAST(bedCount, location);
-    const additionalMonthly  = Math.max(0, netToOwner - traditionalMonthly);
-    const upliftPct          = traditionalMonthly > 0
-      ? Math.round(((netToOwner - traditionalMonthly) / traditionalMonthly) * 100)
+    const percentageIncrease = currentRent > 0
+      ? Math.round((additionalMonthly / currentRent) * 100)
       : 0;
 
     return {
-      nightly: Math.round(nightly),
-      grossMonthly, opex, mgmtFee, netToOwner,
-      cleaningMonthly, consumablesMonthly, platformFees, utilitiesMonthly,
-      traditionalMonthly, additionalMonthly, upliftPct,
-      annual: {
-        gross:    grossMonthly * 12,
-        opex:     opex * 12,
-        mgmtFee:  mgmtFee * 12,
-        netToOwner: netToOwner * 12,
-        traditional: traditionalMonthly * 12,
-        additional:  additionalMonthly * 12,
-      },
+      inputs: { bedrooms, bathrooms, type, parking, location },
+      currentRent, baseIncome, bathAdj, typeAdj, parkingAdj, locationAdj,
+      estimatedMonthly, additionalMonthly,
+      currentAnnual, estimatedAnnual, additionalAnnual,
+      percentageIncrease,
     };
-  }
-
-  function estimateAST(bedrooms, location) {
-    // Rough Bedford-area AST monthly rent baseline
-    const base = [700, 850, 1050, 1250, 1450, 1650][Math.min(5, bedrooms)];
-    return base * (LOCATION_MULTIPLIERS[location] || 1);
   }
 
   // ----- Form serialisation helpers (used by both pages) -----
+  const FIELDS = ['bedrooms', 'bathrooms', 'type', 'parking', 'location'];
+
   function readForm(form) {
     const data = new FormData(form);
-    return {
-      bedrooms: data.get('bedrooms') || '2',
-      type:     data.get('type')     || 'flat',
-      location: data.get('location') || 'bedford',
-      currentRent: data.get('currentRent') || '',
-      bathrooms:   data.get('bathrooms') || '',
-      furnished:   data.get('furnished')  || '',
-    };
+    const out = {};
+    FIELDS.forEach(k => { out[k] = data.get(k) || ''; });
+    return out;
   }
 
   function populateForm(form, params) {
-    Object.entries(params).forEach(([k, v]) => {
+    FIELDS.forEach(k => {
       const field = form.elements.namedItem(k);
-      if (field && v) field.value = v;
+      if (field && params[k]) field.value = params[k];
     });
   }
 
@@ -148,7 +148,6 @@
   const dealForm    = document.querySelector('form[data-deal-form="page"]');
   if (!resultsRoot && !dealForm) return;
 
-  // Pre-fill the on-page form from URL params, then trigger calc after a small delay
   const urlParams = Object.fromEntries(new URLSearchParams(location.search));
   if (dealForm) populateForm(dealForm, urlParams);
 
@@ -156,169 +155,86 @@
     dealForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const inputs = readForm(dealForm);
-      // Update URL without reload so the user can share results
       const params = new URLSearchParams(inputs);
       history.replaceState(null, '', `?${params.toString()}`);
       runAndRender(inputs);
     });
   }
 
-  // Auto-run once on load if URL has params (or fall back to defaults)
+  // Auto-run once on load (URL params or defaults)
   if (resultsRoot) {
-    const startInputs = Object.keys(urlParams).length ? urlParams : { bedrooms: '2', type: 'flat', location: 'bedford' };
-    // Defer slightly so the reveal animations look intentional
+    const startInputs = Object.keys(urlParams).length
+      ? urlParams
+      : { bedrooms: '2', bathrooms: '2', type: 'flat', parking: '0', location: 'other' };
     setTimeout(() => runAndRender(startInputs), 600);
   }
 
   // ----- Render -----
   function runAndRender(rawInputs) {
-    const inputs = {
-      bedrooms: rawInputs.bedrooms || '2',
-      type:     rawInputs.type     || 'flat',
-      location: rawInputs.location || 'bedford',
-      currentRent: rawInputs.currentRent || '',
-    };
-    const r = calculateDeal(inputs);
+    const r = calculateDeal(rawInputs);
 
-    // Summary metrics — annual big number, monthly small sub-label
+    // Summary metric cards: annual headline + monthly sub
     const setMetric = (id, val) => {
       const el = $(`#${id}`);
       if (el) animateValue(el, val, gbp);
     };
-    setMetric('metric-traditional', r.annual.traditional);
-    setMetric('metric-sa',          r.annual.netToOwner);
-    setMetric('metric-additional',  r.annual.additional);
+    setMetric('metric-traditional', r.currentAnnual);
+    setMetric('metric-sa',          r.estimatedAnnual);
+    setMetric('metric-additional',  r.additionalAnnual);
 
     const setSub = (id, monthly) => {
       const el = $(`#${id}`);
       if (el) el.textContent = `${gbp(monthly)} / monthly`;
     };
-    setSub('metric-traditional-sub', r.traditionalMonthly);
-    setSub('metric-sa-sub',          r.netToOwner);
+    setSub('metric-traditional-sub', r.currentRent);
+    setSub('metric-sa-sub',          r.estimatedMonthly);
     setSub('metric-additional-sub',  r.additionalMonthly);
 
-    // Line chart — 12-month projection
-    drawLineChart(r);
-
-    // Breakdown table
+    // Formula breakdown — shows exactly how the estimated monthly income was reached
     const tbl = $('#breakdown-tbody');
     if (tbl) {
+      const bathLabel = `${r.inputs.bathrooms} bathroom${r.inputs.bathrooms === 1 ? '' : 's'}`;
       tbl.innerHTML = '';
       const rows = [
-        ['Gross nightly rental income',    r.grossMonthly,             r.annual.gross],
-        ['Cleaning & linen',              -r.cleaningMonthly,          -r.cleaningMonthly * 12],
-        ['Consumables (toiletries, etc.)', -r.consumablesMonthly,      -r.consumablesMonthly * 12],
-        ['Utilities, broadband, council', -r.utilitiesMonthly,         -r.utilitiesMonthly * 12],
-        ['Platform fees (Airbnb / Booking)', -r.platformFees,          -r.platformFees * 12],
-        ['Maintenance allowance',          -50,                        -600],
-        ['Unico Suites management fee',    -r.mgmtFee,                 -r.mgmtFee * 12],
+        [`Base estimated income (${r.inputs.bedrooms} bed)`, gbp(r.baseIncome)],
+        [`Bathroom adjustment (${bathLabel})`,               signed(r.bathAdj)],
+        [`Property type (${TYPE_LABELS[r.inputs.type]})`,    signed(r.typeAdj)],
+        [`Parking (${PARKING_LABELS[r.inputs.parking]})`,    signed(r.parkingAdj)],
+        [`Location (${LOCATION_LABELS[r.inputs.location]})`, signed(r.locationAdj)],
       ];
-      rows.forEach(([label, monthly, annual]) => {
+      rows.forEach(([label, value]) => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${label}</td><td>${monthly < 0 ? '−' : ''}${gbp(Math.abs(monthly))}</td><td>${annual < 0 ? '−' : ''}${gbp(Math.abs(annual))}</td>`;
+        tr.innerHTML = `<td>${label}</td><td>${value}</td>`;
         tbl.appendChild(tr);
       });
       const totalTr = document.createElement('tr');
       totalTr.className = 'is-total';
-      totalTr.innerHTML = `<td>Net to owner</td><td>${gbp(r.netToOwner)}</td><td>${gbp(r.annual.netToOwner)}</td>`;
+      totalTr.innerHTML = `<td>Estimated monthly income</td><td>${gbp(r.estimatedMonthly)}</td>`;
       tbl.appendChild(totalTr);
     }
 
     // Uplift badge
     const upliftEl = $('#uplift-pct');
     if (upliftEl) {
-      upliftEl.textContent = r.upliftPct >= 0 ? `+${r.upliftPct}%` : `${r.upliftPct}%`;
+      upliftEl.textContent = r.percentageIncrease >= 0
+        ? `+${r.percentageIncrease}%`
+        : `${r.percentageIncrease}%`;
     }
     const upliftSub = $('#uplift-sub');
     if (upliftSub) {
-      upliftSub.textContent = r.upliftPct > 0
-        ? `vs. estimated traditional AST letting of ${gbp(r.traditionalMonthly)}/month`
-        : `Your current rent already exceeds the SA estimate — let's chat about strategy`;
+      upliftSub.textContent = r.percentageIncrease > 0
+        ? `vs. typical Bedford long-let rent of ${gbp(r.currentRent)} / month for a ${r.inputs.bedrooms}-bed`
+        : `Estimated SA income is at or below the long-let baseline — let's chat about strategy`;
     }
 
     // Reveal once
     resultsRoot.classList.add('is-visible');
   }
 
-  // ----- Line chart (12-month seasonality view) -----
-  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  // Bedford SA seasonality — peak summer, dip mid-winter. Roughly normalised to 1.
-  const SEASONALITY = [0.82, 0.88, 0.98, 1.05, 1.10, 1.18, 1.26, 1.22, 1.05, 0.95, 0.82, 0.89];
-  const SVG_NS = 'http://www.w3.org/2000/svg';
-
-  function drawLineChart(r) {
-    const svg = document.querySelector('.line-chart');
-    if (!svg) return;
-    const W = 720, H = 320;
-    const pad = { top: 24, right: 24, bottom: 44, left: 64 };
-    const plotW = W - pad.left - pad.right;
-    const plotH = H - pad.top - pad.bottom;
-
-    const saMonthly  = SEASONALITY.map(f => r.netToOwner * f);
-    const astMonthly = MONTHS.map(() => r.traditionalMonthly);
-    const ymax = Math.max(...saMonthly, ...astMonthly) * 1.1 || 100;
-    const ymin = 0;
-
-    const x = i => pad.left + (i / (MONTHS.length - 1)) * plotW;
-    const y = v => pad.top + (1 - (v - ymin) / (ymax - ymin)) * plotH;
-
-    const pathFor = (series) =>
-      series.map((v, i) => `${i === 0 ? 'M' : 'L'} ${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(' ');
-
-    svg.querySelector('.line-chart__path--ast').setAttribute('d', pathFor(astMonthly));
-    svg.querySelector('.line-chart__path--sa').setAttribute('d', pathFor(saMonthly));
-
-    // Grid + y-axis ticks
-    const grid = svg.querySelector('.line-chart__grid');
-    const yAxis = svg.querySelector('.line-chart__y-axis');
-    const xAxis = svg.querySelector('.line-chart__x-axis');
-    const pts = svg.querySelector('.line-chart__points');
-    [grid, yAxis, xAxis, pts].forEach(g => { while (g.firstChild) g.removeChild(g.firstChild); });
-
-    const tickCount = 5;
-    for (let i = 0; i <= tickCount; i++) {
-      const val = ymin + (ymax - ymin) * (i / tickCount);
-      const yy  = y(val);
-      const line = document.createElementNS(SVG_NS, 'line');
-      line.setAttribute('x1', pad.left);   line.setAttribute('x2', W - pad.right);
-      line.setAttribute('y1', yy);          line.setAttribute('y2', yy);
-      line.setAttribute('class', 'line-chart__gridline');
-      grid.appendChild(line);
-      const lbl = document.createElementNS(SVG_NS, 'text');
-      lbl.setAttribute('x', pad.left - 10); lbl.setAttribute('y', yy + 4);
-      lbl.setAttribute('text-anchor', 'end');
-      lbl.setAttribute('class', 'line-chart__label');
-      lbl.textContent = gbp(val);
-      yAxis.appendChild(lbl);
-    }
-
-    // X-axis month labels
-    MONTHS.forEach((m, i) => {
-      const lbl = document.createElementNS(SVG_NS, 'text');
-      lbl.setAttribute('x', x(i));
-      lbl.setAttribute('y', H - pad.bottom + 20);
-      lbl.setAttribute('text-anchor', 'middle');
-      lbl.setAttribute('class', 'line-chart__label');
-      lbl.textContent = m;
-      xAxis.appendChild(lbl);
-    });
-
-    // Data points on the SA line — make the seasonal story visible
-    saMonthly.forEach((v, i) => {
-      const c = document.createElementNS(SVG_NS, 'circle');
-      c.setAttribute('cx', x(i));
-      c.setAttribute('cy', y(v));
-      c.setAttribute('r', 3.5);
-      c.setAttribute('class', 'line-chart__point line-chart__point--sa');
-      pts.appendChild(c);
-    });
-  }
-
   // ----- Print: wired to the data-print-results button -----
   const printBtn = document.querySelector('[data-print-results]');
   if (printBtn) {
     printBtn.addEventListener('click', () => {
-      // Stamp the date into the print-header so the printed copy is dated.
       const header = document.querySelector('.print-header');
       if (header && !header.querySelector('.print-header__date')) {
         const d = new Date();
