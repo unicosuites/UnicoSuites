@@ -164,10 +164,21 @@
       const params = new URLSearchParams(inputs);
       history.replaceState(null, '', `?${params.toString()}`);
       runAndRender(inputs);
-      if (resultsRoot) {
-        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        resultsRoot.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-      }
+      scrollToResults();
+    });
+  }
+
+  function scrollToResults() {
+    if (!resultsRoot) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Defer to next frame so layout settles after the re-render before we
+    // measure offsets. scrollIntoView raced with the animations on some
+    // mobile browsers — manual scrollTo with the fixed-nav offset is robust.
+    requestAnimationFrame(() => {
+      const nav = document.querySelector('.nav');
+      const navHeight = nav ? nav.getBoundingClientRect().height : 0;
+      const top = resultsRoot.getBoundingClientRect().top + window.scrollY - navHeight - 8;
+      window.scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
     });
   }
 
@@ -199,6 +210,8 @@
     setSub('metric-traditional-sub', r.currentRent);
     setSub('metric-sa-sub',          r.estimatedMonthly);
     setSub('metric-additional-sub',  r.additionalMonthly);
+
+    drawComparisonChart(r);
 
     // Formula breakdown — shows how both the current rent and the estimated
     // income are built up from the same base + adjustment block.
@@ -240,6 +253,75 @@
 
     // Reveal once
     resultsRoot.classList.add('is-visible');
+  }
+
+  // ----- Comparison chart: two flat lines + gold gap fill -----
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+
+  function drawComparisonChart(r) {
+    const svg = document.querySelector('.line-chart');
+    if (!svg) return;
+    const W = 720, H = 320;
+    const pad = { top: 32, right: 24, bottom: 44, left: 72 };
+    const plotW = W - pad.left - pad.right;
+    const plotH = H - pad.top - pad.bottom;
+
+    // Both lines are flat — model has no seasonality. The visual story is
+    // the gap between them (the additional income).
+    const ymax = Math.max(r.estimatedMonthly, r.currentRent) * 1.15 || 100;
+    const ymin = 0;
+
+    const x = i => pad.left + (i / (MONTHS.length - 1)) * plotW;
+    const y = v => pad.top + (1 - (v - ymin) / (ymax - ymin)) * plotH;
+
+    const xL = x(0);
+    const xR = x(MONTHS.length - 1);
+    const ySa  = y(r.estimatedMonthly);
+    const yAst = y(r.currentRent);
+
+    // Lines (flat horizontals)
+    svg.querySelector('.line-chart__path--ast')
+       .setAttribute('d', `M ${xL} ${yAst} L ${xR} ${yAst}`);
+    svg.querySelector('.line-chart__path--sa')
+       .setAttribute('d', `M ${xL} ${ySa} L ${xR} ${ySa}`);
+
+    // Gold fill between the two lines = additional income zone
+    svg.querySelector('.line-chart__fill')
+       .setAttribute('d', `M ${xL} ${ySa} L ${xR} ${ySa} L ${xR} ${yAst} L ${xL} ${yAst} Z`);
+
+    // Grid + axis labels
+    const grid  = svg.querySelector('.line-chart__grid');
+    const yAxis = svg.querySelector('.line-chart__y-axis');
+    const xAxis = svg.querySelector('.line-chart__x-axis');
+    [grid, yAxis, xAxis].forEach(g => { while (g.firstChild) g.removeChild(g.firstChild); });
+
+    const tickCount = 5;
+    for (let i = 0; i <= tickCount; i++) {
+      const val = ymin + (ymax - ymin) * (i / tickCount);
+      const yy  = y(val);
+      const line = document.createElementNS(SVG_NS, 'line');
+      line.setAttribute('x1', pad.left);   line.setAttribute('x2', W - pad.right);
+      line.setAttribute('y1', yy);         line.setAttribute('y2', yy);
+      line.setAttribute('class', 'line-chart__gridline');
+      grid.appendChild(line);
+      const lbl = document.createElementNS(SVG_NS, 'text');
+      lbl.setAttribute('x', pad.left - 10); lbl.setAttribute('y', yy + 4);
+      lbl.setAttribute('text-anchor', 'end');
+      lbl.setAttribute('class', 'line-chart__label');
+      lbl.textContent = gbp(val);
+      yAxis.appendChild(lbl);
+    }
+
+    MONTHS.forEach((m, i) => {
+      const lbl = document.createElementNS(SVG_NS, 'text');
+      lbl.setAttribute('x', x(i));
+      lbl.setAttribute('y', H - pad.bottom + 20);
+      lbl.setAttribute('text-anchor', 'middle');
+      lbl.setAttribute('class', 'line-chart__label');
+      lbl.textContent = m;
+      xAxis.appendChild(lbl);
+    });
   }
 
   // ----- Print: wired to the data-print-results button -----

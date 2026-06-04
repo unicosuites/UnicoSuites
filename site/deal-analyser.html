@@ -256,6 +256,25 @@
         </div>
       </div>
 
+      <div class="results__chart reveal">
+        <h3 style="text-align:center;margin-bottom:0.5rem">Current rent vs estimated income</h3>
+        <p style="text-align:center;font-size:var(--fs-sm);color:var(--text-light);margin-bottom:1.5rem">The gold area between the two lines is your additional monthly income — every month, all year.</p>
+        <div class="line-chart-wrap">
+          <svg class="line-chart" viewBox="0 0 720 320" role="img" aria-label="Comparison of current monthly rent against estimated serviced-accommodation income across a 12-month period">
+            <g class="line-chart__grid"></g>
+            <path class="line-chart__fill" d="" fill="rgba(212,175,55,0.18)"></path>
+            <g class="line-chart__y-axis"></g>
+            <g class="line-chart__x-axis"></g>
+            <path class="line-chart__path line-chart__path--ast" d="" fill="none"></path>
+            <path class="line-chart__path line-chart__path--sa"  d="" fill="none"></path>
+          </svg>
+        </div>
+        <ul class="line-chart__legend">
+          <li><span class="legend-swatch legend-swatch--ast"></span>Current rent</li>
+          <li><span class="legend-swatch legend-swatch--sa"></span>Estimated income</li>
+        </ul>
+      </div>
+
       <div class="breakdown reveal">
         <table>
           <caption>How current rent &amp; estimated income are calculated</caption>
