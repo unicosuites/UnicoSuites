@@ -164,6 +164,10 @@
       const params = new URLSearchParams(inputs);
       history.replaceState(null, '', `?${params.toString()}`);
       runAndRender(inputs);
+      if (resultsRoot) {
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        resultsRoot.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      }
     });
   }
 
