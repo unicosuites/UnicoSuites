@@ -89,14 +89,19 @@
     const parking = clampParking(raw.parking);
     const location = clampLocation(raw.location);
 
-    const currentRent = BASE_RENT[bedrooms];
+    const baseRent    = BASE_RENT[bedrooms];
     const baseIncome  = BASE_SA_INCOME[bedrooms];
     const bathAdj     = (bathrooms - 1) * 100;
     const typeAdj     = TYPE_ADJ[type];
     const parkingAdj  = PARKING_ADJ[parking];
     const locationAdj = LOCATION_ADJ[location];
 
-    const estimatedMonthly  = baseIncome + bathAdj + typeAdj + parkingAdj + locationAdj;
+    // Property attributes (bathrooms, type, parking, location) move BOTH the
+    // typical long-let rent and the projected SA income. A 2-bed house in the
+    // town centre rents — and earns — more than a 2-bed flat on the fringes.
+    const adjustments      = bathAdj + typeAdj + parkingAdj + locationAdj;
+    const currentRent      = baseRent + adjustments;
+    const estimatedMonthly = baseIncome + adjustments;
     const additionalMonthly = estimatedMonthly - currentRent;
 
     const currentAnnual    = currentRent * 12;
@@ -109,8 +114,9 @@
 
     return {
       inputs: { bedrooms, bathrooms, type, parking, location },
-      currentRent, baseIncome, bathAdj, typeAdj, parkingAdj, locationAdj,
-      estimatedMonthly, additionalMonthly,
+      baseRent, baseIncome,
+      bathAdj, typeAdj, parkingAdj, locationAdj,
+      currentRent, estimatedMonthly, additionalMonthly,
       currentAnnual, estimatedAnnual, additionalAnnual,
       percentageIncrease,
     };
@@ -190,26 +196,27 @@
     setSub('metric-sa-sub',          r.estimatedMonthly);
     setSub('metric-additional-sub',  r.additionalMonthly);
 
-    // Formula breakdown — shows exactly how the estimated monthly income was reached
+    // Formula breakdown — shows how both the current rent and the estimated
+    // income are built up from the same base + adjustment block.
     const tbl = $('#breakdown-tbody');
     if (tbl) {
       const bathLabel = `${r.inputs.bathrooms} bathroom${r.inputs.bathrooms === 1 ? '' : 's'}`;
       tbl.innerHTML = '';
       const rows = [
-        [`Base estimated income (${r.inputs.bedrooms} bed)`, gbp(r.baseIncome)],
-        [`Bathroom adjustment (${bathLabel})`,               signed(r.bathAdj)],
-        [`Property type (${TYPE_LABELS[r.inputs.type]})`,    signed(r.typeAdj)],
-        [`Parking (${PARKING_LABELS[r.inputs.parking]})`,    signed(r.parkingAdj)],
-        [`Location (${LOCATION_LABELS[r.inputs.location]})`, signed(r.locationAdj)],
+        [`Baseline (${r.inputs.bedrooms} bed)`,              gbp(r.baseRent),    gbp(r.baseIncome)],
+        [`Bathroom adjustment (${bathLabel})`,               signed(r.bathAdj),  signed(r.bathAdj)],
+        [`Property type (${TYPE_LABELS[r.inputs.type]})`,    signed(r.typeAdj),  signed(r.typeAdj)],
+        [`Parking (${PARKING_LABELS[r.inputs.parking]})`,    signed(r.parkingAdj), signed(r.parkingAdj)],
+        [`Location (${LOCATION_LABELS[r.inputs.location]})`, signed(r.locationAdj), signed(r.locationAdj)],
       ];
-      rows.forEach(([label, value]) => {
+      rows.forEach(([label, rentCol, incomeCol]) => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${label}</td><td>${value}</td>`;
+        tr.innerHTML = `<td>${label}</td><td>${rentCol}</td><td>${incomeCol}</td>`;
         tbl.appendChild(tr);
       });
       const totalTr = document.createElement('tr');
       totalTr.className = 'is-total';
-      totalTr.innerHTML = `<td>Estimated monthly income</td><td>${gbp(r.estimatedMonthly)}</td>`;
+      totalTr.innerHTML = `<td>Monthly total</td><td>${gbp(r.currentRent)}</td><td>${gbp(r.estimatedMonthly)}</td>`;
       tbl.appendChild(totalTr);
     }
 
