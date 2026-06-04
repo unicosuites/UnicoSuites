@@ -186,7 +186,7 @@
   if (resultsRoot) {
     const startInputs = Object.keys(urlParams).length
       ? urlParams
-      : { bedrooms: '2', bathrooms: '2', type: 'flat', parking: '0', location: 'other' };
+      : { bedrooms: '2', bathrooms: '2', type: 'flat', parking: '0', location: 'town-centre' };
     setTimeout(() => runAndRender(startInputs), 600);
   }
 
