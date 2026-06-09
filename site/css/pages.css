@@ -424,7 +424,8 @@
 }
 .founder__head   { grid-area: name; display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; }
 .founder__avatar { grid-area: avatar; }
-.founder__bio    { grid-area: bio; }
+/* Pin bio to the top of its row so first lines align across cards of unequal bio length. */
+.founder__bio    { grid-area: bio; align-self: start; }
 /* Hover lift on pointer devices only — avoids the gold border lingering after a tap on mobile. */
 @media (hover: hover) {
   .founder:hover {
