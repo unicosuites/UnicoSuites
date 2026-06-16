@@ -9,10 +9,9 @@
   'use strict';
 
   // ── Booking destination ───────────────────────────────────────────────
-  // When the Guesty direct-booking site is live, set BOOKING_URL to that URL.
-  // Every "Book a stay" CTA (anything with [data-book-link]) updates automatically.
-  // Leave as '' to keep the fallback (the contact form) wired in the HTML.
-  const BOOKING_URL = '';
+  // Every "Book a stay" CTA (anything with [data-book-link]) is rewritten to this URL.
+  // Leave as '' to fall back to the contact form wired in the HTML.
+  const BOOKING_URL = 'https://unicosuites.guestybookings.com/en';
   if (BOOKING_URL) {
     document.querySelectorAll('[data-book-link]').forEach(a => {
       a.href = BOOKING_URL;
