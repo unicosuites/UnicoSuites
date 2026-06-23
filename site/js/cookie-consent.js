@@ -8,7 +8,7 @@
   'use strict';
 
   const STORAGE_KEY = 'us-cookie-consent-v1';
-  const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // TODO: replace with real GA4 ID once provisioned
+  const GA_MEASUREMENT_ID = 'G-CQ8RECP04V';
 
   const banner = document.getElementById('cookie-banner');
   if (!banner) return;
