@@ -8,7 +8,7 @@
 ## 1. Create the profile
 
 1. Go to [business.google.com](https://business.google.com).
-2. Sign in with the Google account you want to own this profile *(use the same account as the GA4 setup — `unicosuites@gmail.com` or the company Google Workspace account, **not** a personal account)*.
+2. Sign in with the Google account that should **own** this profile long-term. Use the **same Google account you used to create the GA4 property** so analytics and GBP live under one identity. This should be a company account (e.g. a `hello@unicosuites.com` Google login, or a dedicated `unicosuites.business@gmail.com`), **never** a founder's personal Gmail — if that person leaves, the profile leaves with them.
 3. Click **Manage now** → **Add your business**.
 4. **Business name:** `Unico Suites`
 5. **Business category (primary):** `Property management company`
