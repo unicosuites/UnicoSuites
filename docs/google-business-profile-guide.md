@@ -25,7 +25,7 @@
 Unico Suites serves landlords — guests don't visit the office. This is a **service-area business**, not a storefront.
 
 1. When asked *"Do you want to add a location customers can visit?"* — answer **No**.
-2. Set the registered business address (used for verification, not displayed publicly): `60 Bromham Road, Bedford, MK40 2QG`.
+2. Set the registered business address (used for verification, not displayed publicly): `60B Bromham Road, Bedford, MK40 2QG`.
 3. **Service areas** — add:
    - Bedford
    - Bedfordshire

@@ -106,7 +106,7 @@ HEAD_TMPL = """<!doctype html>
         "telephone": "+44-1234-237990",
         "address": {{
           "@type": "PostalAddress",
-          "streetAddress": "60 Bromham Road",
+          "streetAddress": "60B Bromham Road",
           "addressLocality": "Bedford",
           "postalCode": "MK40 2QG",
           "addressCountry": "GB"
@@ -204,7 +204,7 @@ FOOTER_HTML = """
       <div class="footer__col">
         <h2>Contact</h2>
         <address class="footer__contact">
-          60 Bromham Road<br>
+          60B Bromham Road<br>
           Bedford, MK40 2QG<br>
           <a href="tel:+441234237990">01234 237990</a><br>
           <a href="mailto:hello@unicosuites.com">hello@unicosuites.com</a>
