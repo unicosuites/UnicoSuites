@@ -44,6 +44,7 @@ HEAD_TMPL = """<!doctype html>
   <title>{title}</title>
   <meta name="description" content="{description}">
   <link rel="canonical" href="{canonical}">
+  <meta name="google-site-verification" content="vGwkYnZpwZKf70tfUSyxkmaugJ2sZJOp89THX-I0-Ec">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="{canonical}">
