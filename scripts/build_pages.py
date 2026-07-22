@@ -128,7 +128,7 @@ NAV_HTML = """
 <header class="nav" role="banner">
   <div class="nav__inner">
     <a href="index.html" class="nav__brand" aria-label="Unico Suites Serviced Accommodation — home">
-      <span class="nav__brand-mark"><img src="assets/brand/logo.png" alt="" width="36" height="36"></span>
+      <span class="nav__brand-mark"><img src="assets/brand/logo.png" alt="Unico Suites logo" width="36" height="36"></span>
       <span class="nav__brand-text">
         <span class="nav__brand-name">Unico Suites</span>
         <span class="nav__brand-sub">Serviced Accommodation</span>
