@@ -43,7 +43,7 @@ HEAD_TMPL = """<!doctype html>
   <meta name="theme-color" content="#0D2A48">
   <title>{title}</title>
   <meta name="description" content="{description}">
-  <link rel="canonical" href="{canonical}">
+{robots_meta}  <link rel="canonical" href="{canonical}">
   <meta name="google-site-verification" content="vGwkYnZpwZKf70tfUSyxkmaugJ2sZJOp89THX-I0-Ec">
 
   <meta property="og:type" content="website">
@@ -267,6 +267,13 @@ def build(slug: str):
     canonical   = f"https://unicosuites.com/{out_slug if out_slug != 'index.html' else ''}"
     extra_scripts = meta.get("extra_scripts", "")
 
+    # Pages that must never be indexed (404, form thank-you). "follow" so link
+    # equity still flows. A noindex page gets no self-canonical: telling Google
+    # "this URL is canonical" and "don't index it" is contradictory, and a
+    # self-canonical on a 404 is a classic soft-404 trigger.
+    noindex = meta.get("noindex", "").lower() in ("true", "yes", "1")
+    robots_meta = '  <meta name="robots" content="noindex, follow">\n' if noindex else ""
+
     extra_jsonld = ""
     if out_slug != "index.html":
         page_title = meta.get("breadcrumb", title.split("—")[0].strip())
@@ -282,7 +289,10 @@ def build(slug: str):
     head = HEAD_TMPL.format(
         title=title, description=description, canonical=canonical,
         extra_jsonld=extra_jsonld, body_class=body_class,
+        robots_meta=robots_meta,
     )
+    if noindex:
+        head = head.replace(f'  <link rel="canonical" href="{canonical}">\n', "")
     foot = FOOTER_HTML.format(extra_scripts=extra_scripts)
 
     out_path = OUT_DIR / out_slug
