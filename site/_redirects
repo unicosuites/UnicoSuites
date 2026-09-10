@@ -1,14 +1,20 @@
 # Netlify redirects
 
-# Strip trailing slashes on clean URLs without an extension (Netlify handles HTML
-# extension fallback automatically; this is a belt-and-braces clean-URL aid)
-/about         /about.html         200
-/how-it-works  /how-it-works.html  200
-/deal-analyser /deal-analyser.html 200
-/faq           /faq.html           200
-/contact       /contact.html       200
-/privacy       /privacy.html       200
-/cookies       /cookies.html       200
+# Canonical URL form is the .html one (matches <link rel="canonical">, the
+# sitemap and every internal link). These MUST be 301 redirects, not 200
+# rewrites: a 200 serves the same page at a second live URL, so Google crawls
+# both and reports the extensionless one as "Alternative page with proper
+# canonical tag" in Search Console, forever. A 301 collapses them.
+/about         /about.html         301!
+/how-it-works  /how-it-works.html  301!
+/deal-analyser /deal-analyser.html 301!
+/faq           /faq.html           301!
+/contact       /contact.html       301!
+/privacy       /privacy.html       301!
+/cookies       /cookies.html       301!
+
+# Homepage has the same duplicate problem: / and /index.html both served 200.
+/index.html    /                   301!
 
 # Old / co.uk redirects (configure unicosuites.co.uk → unicosuites.com via Netlify
 # domain settings; the rule below is the in-app fallback in case anyone visits with
